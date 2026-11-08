@@ -1867,7 +1867,7 @@ ZOO_MAIN_AREA = r"""
                         | ::::::::::: |                         | ::::::::::: |
                         '-----+ +-----'                         '-----+ +-----'
                               |:|             ___________             |:|
-                              |:|            / C-PLAZA   \            |:|
+                              |:|            /  C-PLAZA  \            |:|
                               |:|           |=============|           |:|
                               |:|           |[O]Fountain  |           |:|
                               +:------------+[O]Restrooms +------------:+
@@ -5125,7 +5125,7 @@ def gift_shop(): # done
         print(GIFT_SHOP.format(cost=f"{Total_Cost:05.2f}",money=f"{Your_Money:05.2f}"))
         Actions = input('What would you like to do? (add (to cart), view (cart), buy, leave): ').lower()
         if Actions in ['add', 'add to cart', 'add cart', 'addcart']:
-            AddCartItem = input('Would you like to add? (plush, keychain, postcard, book, apparel): ').lower()
+            AddCartItem = input('Would you like to add? (plush, keychain, postcard, apparel): ').lower()
             if AddCartItem in ['plush']:
                 print(rf"""There is 
 {Penguin_Plush_Count} Penguin Plushies $6.95
@@ -5386,6 +5386,7 @@ would you like to checkout? (y/n):
                 continue
 
         elif Actions in ['leave', 'exit', 'stop']:
+            Total_Cost = 00.00
             break
 
         else:
@@ -5545,6 +5546,7 @@ would you like to checkout? (y/n):
                 time.sleep(1)
                 continue
         elif Actions in ['leave', 'exit', 'stop']:
+            Total_Cost = 00.00
             break
         else:
             print('something went wrong')

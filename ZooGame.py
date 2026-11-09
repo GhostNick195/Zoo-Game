@@ -980,7 +980,7 @@ def see_mountain_chicken():
         if Action == 'admire':
             print('You admire the frog...')
             time.sleep(0.5)
-            print('The thinks you look like a chicken...')
+            print('The frog thinks you look like a chicken...')
             time.sleep(1.5)
             continue
         elif Action in ['info','get info','get']:
@@ -1749,6 +1749,12 @@ GATE2_PASS = False
 Inventory = []
 Sale = False
 Total_Cost = 00.00
+Stole = False
+StealAttempt = False
+secretsteal = False
+secretjump = False
+secretriver = False
+secrets_found = 0
 
 WIP = r"""
                               ..
@@ -2037,7 +2043,7 @@ HELP_DESK = r"""
         |                   [ TAKE A FLYER ]                                              [ LOST & FOUND ]                                 |
         |                .---.  .---.  .---.                                           .-------------------.                               |
         |                |   |  |   |  |   |                                           |   ______________   |                              |
-        |                | λ |  | Ω |  | Σ |                                           |  |    ︻╦̵̵̿╤──   |  |                              |
+        |                | λ |  | Ω |  | Σ |                                           |  |     .✦ ݁˖     |  |                              |
         |                |___|  |___|  |___|                                           |  |______________|  |                              |
         |                                                                              '-------------------'                               |
 """
@@ -5118,7 +5124,7 @@ def search_inventory():
             time.sleep(1)
             break
 def gift_shop(): # done
-    global Monkey_Plush_Count, Elephant_Plush_Count, Penguin_Plush_Count, Tiger_Plush_Count, Koala_Plush_Count, Giraffe_Plush_Count, Keychain_Count, Postcard_Count, Your_Money, Total_Cost, Inventory
+    global Monkey_Plush_Count, Elephant_Plush_Count, Penguin_Plush_Count, Tiger_Plush_Count, Koala_Plush_Count, Giraffe_Plush_Count, Keychain_Count, Postcard_Count, Your_Money, Total_Cost, Inventory, StealAttempt, Stole, secretsteal
     Cart = []
     while True:
         Clear()
@@ -5196,7 +5202,7 @@ in stock.""")
                         print('There is no more Giraffe Plushes in stock.')
                         time.sleep(1)
                         continue
-                elif AddPlushToCart in ['monkey' or 'monkeyplush' or 'monkey plush']:
+                elif AddPlushToCart in ['monkey', 'monkeyplush', 'monkey plush']:
                     if Monkey_Plush_Count != 0:
                         Cart.append('Monkey Plush')
                         Total_Cost += 9.99
@@ -5279,13 +5285,9 @@ in stock...""")
                     print('Something went wrong')
                     time.sleep(0.75)
                     continue
-
-
             else:
                 print('Something went wrong')
                 time.sleep(1)            
-
-
 
         elif Actions in ['buy', 'purchase','checkout']:
             if len(Cart) != 0:
@@ -5389,11 +5391,284 @@ would you like to checkout? (y/n):
             Total_Cost = 00.00
             break
 
+        elif Actions == 'steal':
+            if secretsteal == False:
+                print('You Found a Secret!!')
+                secretsteal = True
+            else:
+                pass
+            StealAttempt = True
+            steal = input('Would you like to steal? (plush, keychain, postcard, apparel): ').lower()
+            if steal in ['plush']:
+                stealplush = input('Please input plush name: ').lower()
+                if stealplush in ['penguin', 'penguinplush', 'penguin plush']:
+                    if Penguin_Plush_Count != 0:
+                        print('You attempt to steal the penguin plush...')
+                        time.sleep(1)
+                        if randint(1,100) >= 98:
+                            Stole = True
+                            Inventory.append('Penguin Plush')
+                            Penguin_Plush_Count -= 1
+                            print('You successfully stole a penguin plush...disgusting...')
+                            time.sleep(1)
+                            print('Reflect upon your actions...')
+                            time.sleep(1.5)
+                            continue
+                        else:
+                            print('You chickened out...')
+                            time.sleep(1)
+                            print('Why are you trying to steal from a zoo?')
+                            time.sleep(2)
+                            continue
+                    else:
+                        print('There is no more Penguin Plushes in stock.')
+                        time.sleep(1)
+                        continue
+                elif stealplush in ['tiger', 'tiger plush', 'tigerplush']:
+                    if Tiger_Plush_Count != 0:
+                        print('You attempt to steal the tiger plush...')
+                        time.sleep(1)
+                        if randint(1,100) >= 98:
+                            Stole = True
+                            Inventory.append('Tiger Plush')
+                            Tiger_Plush_Count -= 1
+                            print('You successfully stole a tiger plush...disgusting...')
+                            time.sleep(1)
+                            print('Reflect upon your actions...')
+                            time.sleep(1.5)
+                            continue
+                        else:
+                            print('You chickened out...')
+                            time.sleep(1)
+                            print('Why are you trying to steal from a zoo?')
+                            time.sleep(2)
+                            continue
+                    else:
+                        print("There is no more Tiger Plushes in stock.")
+                        time.sleep(1)
+                        continue
+                elif stealplush in ['elephant', 'elephantplush', 'elephant plush']:
+                    if Elephant_Plush_Count != 0:
+                        print('You attempt to steal the elephant plush...')
+                        time.sleep(1)
+                        if randint(1,100) >= 98:
+                            Stole = True
+                            Inventory.append('Elephant Plush')
+                            Elephant_Plush_Count -= 1
+                            print('You successfully stole an elephant plush...disgusting...')
+                            time.sleep(1)
+                            print('Reflect upon your actions...')
+                            time.sleep(1.5)
+                            continue
+                        else:
+                            print('You chickened out...')
+                            time.sleep(1)
+                            print('Why are you trying to steal from a zoo?')
+                            time.sleep(2)
+                            continue
+                    else:
+                        print('There is no more Elephant Plushes in stock.')
+                        time.sleep(1)
+                        continue
+                elif stealplush in ['koala', 'koala plush', 'koalaplush']:
+                    if Koala_Plush_Count != 0:
+                        print('You attempt to steal the elephant plush...')
+                        time.sleep(1)
+                        if randint(1,100) >= 98:
+                            Stole = True
+                            Inventory.append('Koala Plush')
+                            Koala_Plush_Count -= 1
+                            print('You successfully stole a koala plush...disgusting...')
+                            time.sleep(1)
+                            print('Reflect upon your actions...')
+                            time.sleep(1.5)
+                            continue
+                        else:
+                            print('You chickened out...')
+                            time.sleep(1)
+                            print('Why are you trying to steal from a zoo?')
+                            time.sleep(2)
+                            continue
+                    else:
+                        print('There is no more Koala Plushes in stock.')
+                        time.sleep(1)
+                        continue
+                elif stealplush in ['giraffe', 'giraffeplush', 'giraffe plush']:
+                    if Giraffe_Plush_Count != 0:
+                        print('You attempt to steal the elephant plush...')
+                        time.sleep(1)
+                        if randint(1,100) >= 98:
+                            Stole = True
+                            Inventory.append('Giraffe Plush')
+                            Giraffe_Plush_Count -= 1
+                            print('You successfully stole a giraffe plush...disgusting...')
+                            time.sleep(1)
+                            print('Reflect upon your actions...')
+                            time.sleep(1.5)
+                            continue
+                        else:
+                            print('You chickened out...')
+                            time.sleep(1)
+                            print('Why are you trying to steal from a zoo?')
+                            time.sleep(2)
+                            continue
+                    else:
+                        print('There is no more Giraffe Plushes in stock.')
+                        time.sleep(1)
+                        continue
+                elif stealplush in ['monkey', 'monkeyplush', 'monkey plush']:
+                    if Monkey_Plush_Count != 0:
+                        print('You attempt to steal the monkey plush...')
+                        time.sleep(1)
+                        if randint(1,100) >= 98:
+                            Stole = True
+                            Inventory.append('Monkey Plush')
+                            Monkey_Plush_Count -= 1
+                            print('You successfully stole a monkey plush...disgusting...')
+                            time.sleep(1)
+                            print('Reflect upon your actions...')
+                            time.sleep(1.5)
+                            continue
+                        else:
+                            print('You chickened out...')
+                            time.sleep(1)
+                            print('Why are you trying to steal from a zoo?')
+                            time.sleep(2)
+                            continue
+                    else:
+                        print('There is no more Monkey Plushes in stock.')
+                        time.sleep(1)
+                        continue
+                else:
+                    print('Returning...')
+                    time.sleep(1)
+                    continue           
+            elif steal in ['keychain', 'key chain']:
+                stealkeychain = input('Would you like to STEAL a Python Zoo Keychain? (y/n): ').lower()
+                if stealkeychain == 'y':
+                    print('You attempt to steal a keychain...')
+                    time.sleep(1)
+                    if randint(1,100) >= 98:
+                        Stole = True
+                        Inventory.append('Python Zoo Keychain')
+                        Keychain_Count -= 1
+                        print('You successfully stole a keychain...disgusting...')
+                        time.sleep(1)
+                        print('Reflect upon your actions...')
+                        time.sleep(1.5)
+                        continue
+                    else:
+                        print('You chickened out...')
+                        time.sleep(1)
+                        print('Why are you trying to steal from a zoo?')
+                        time.sleep(1)
+                        continue
+                elif stealkeychain == 'n':
+                    print('Have some sense will ya...?')
+                    time.sleep(2)
+                    continue
+                else:
+                    print('Something went wrong')
+                    time.sleep(1)
+                    continue
+            elif steal in ['postcard', 'post', 'card', 'post card']:
+                stealpostcard = input('Would you like to STEAL a Python Zoo Postcard? (y/n): ').lower()
+                if stealpostcard == 'y':
+                    print('You attempt to steal a postcard...')
+                    time.sleep(1)
+                    if randint(1,100) >= 98:
+                        Stole = True
+                        Inventory.append('Python Zoo Postcard')
+                        Postcard_Count -= 1
+                        print('You successfully stole a postcard...disgusting...')
+                        time.sleep(1)
+                        print('Reflect upon your actions...')
+                        time.sleep(1.5)
+                        continue
+                    else:
+                        print('You chickened out...')
+                        time.sleep(1)
+                        print('Why are you trying to steal from a zoo?')
+                        time.sleep(2)
+                        continue
+                elif stealpostcard == 'n':
+                    print('Do I need to knock some sense into ya...?')
+                    time.sleep(0.75)
+                    continue
+                else:
+                    print('Something went wrong')
+                    time.sleep(0.75)
+            elif steal in ['apparel','clothes','clothing','shirt','shirts']:
+                stealapparel = input('Please input Apparel name: ').lower()
+                if stealapparel in ['safari','safarishirt','safari shirt','safari apparel','safariapparel']:
+                    print('You attempt to steal a safari shirt...')
+                    time.sleep(1)
+                    if randint(1,100) >= 98:
+                        Stole = True
+                        Inventory.append('Safari Shirt')
+                        Safari_Apparel_Count -= 1
+                        print('You successfully stole a safari shirt...disgusting...')
+                        time.sleep(1)
+                        print('Reflect upon your actions...')
+                        time.sleep(1.5)
+                        continue
+                    else:
+                        print('You chickened out...')
+                        time.sleep(1)
+                        print('Why are you trying to steal from a zoo?')
+                        time.sleep(2)
+                        continue
+                elif stealapparel in ['giraffe','giraffe apparel','giraffeapparel','giraffeshirt','giraffe shirt']:
+                    print('You attempt to steal a safari shirt...')
+                    time.sleep(1)
+                    if randint(1,100) >= 98:
+                        Stole = True
+                        Inventory.append('Giraffe Shirt')
+                        Giraffe_Apparel_Count -= 1
+                        print('You successfully stole a giraffe shirt...disgusting...')
+                        time.sleep(1)
+                        print('Reflect upon your actions...')
+                        time.sleep(1.5)
+                        continue
+                    else:
+                        print('You chickened out...')
+                        time.sleep(1)
+                        print('Why are you trying to steal from a zoo?')
+                        time.sleep(2)
+                        continue
+                elif stealapparel in ['tiger','tigershirt','tiger shirt','tiger apparel', 'tigerapparel']:
+                    print('You attempt to steal a safari shirt...')
+                    time.sleep(1)
+                    if randint(1,100) >= 98:
+                        Stole = True
+                        Inventory.append('Tiger Shirt')
+                        Safari_Apparel_Count -= 1
+                        print('You successfully stole a Tiger shirt...disgusting...')
+                        time.sleep(1)
+                        print('Reflect upon your actions...')
+                        time.sleep(1.5)
+                        continue
+                    else:
+                        print('You chickened out...')
+                        time.sleep(1)
+                        print('Why are you trying to steal from a zoo?')
+                        time.sleep(2)
+                        continue
+                else:
+                    print('Something went wrong')
+                    time.sleep(0.75)
+                    continue
+            elif steal in ['stop','leave','nvm','no']:
+                break
+            else:
+                print('Something went wrong')
+                time.sleep(1)     
         else:
             print('something went wrong')
             continue
 def tickets(): # done
     Clear()
+    global secrets_found
     print(ZOO_ENTRANCE)
     time.sleep(1)
     print('You already paid for your ticket...')
@@ -5401,6 +5676,35 @@ def tickets(): # done
     Go_Home = input('Would you like to go home? (y/n): ').lower()
     if Go_Home == 'y':
         print("You decided that you've had enough zoo time for the day and went home...")
+        time.sleep(1)
+        if StealAttempt and Stole == True:
+            print('As you are leaving, a cop yells at you from behind.')
+            time.sleep(1.5)
+            print("'SIR, STOP RIGHT THERE'")
+            time.sleep(2)
+            print('You sprint away, but the cop is too fast.')
+            time.sleep(2)
+            print('The cop tases you, and you fall to the ground.')
+            time.sleep(2.5)
+            print("The cop screams in your face: 'Sir, you are under arrest for theft and fleeing from an officer.'")
+            time.sleep(2.5)
+            print('He puts you in his car and takes you to the county jail...')
+            time.sleep(2.5)
+            print("blah blah blah, anyways, moral of the story...Don't Steal...")
+        elif StealAttempt and not Stole:
+            print('You reflected on your thought of stealing from the gift shop...')
+            time.sleep(1)
+            print("You don't really care...")
+        else:
+            pass
+        time.sleep(2)
+        if secretsteal == True:
+            secrets_found += 1
+        if secretriver == True:
+            secrets_found += 1
+        if secretjump == True:
+            secrets_found += 1
+        print(f"You found {secrets_found}/3 secrets!")
         time.sleep(2)
         exit()
     elif Go_Home == 'n':
@@ -5583,13 +5887,14 @@ Gate #1, Gate #2, The Savanna, The Forest''')
                 continue
             else:
                 continue
-        elif Question in ['game information','info','game info']:
+        elif Question in ['game information','info','game info','game','code']:
             print('''Most things are randomised when possible. 
+IF YOU WANT TO END CODE, PLEASE PLEASE GO TO TICKETS AREA AS THAT SHOULD BE HOW YOU EXIT!!!
 Fountain, item, and animal graphics were made with an ascii image converter.
 Your money is randomised from $35 to $80.
 I tried to make the game have humor...
 The entire file is about 6100 lines of code, about half are dedicated to graphics. The other half is code.
-There is techincally a small secret in the Northern River.
+There is 3 secrets in the game.
 Yes, I know a pelican eel could not survive in a aquarium at sea level pressure.
 The file is very big, so that means there could be a bug somewhere that I do not know about.''')
             Return = input('Are you done looking at this information? (y/n): ')
@@ -5607,7 +5912,7 @@ The file is very big, so that means there could be a bug somewhere that I do not
             continue
 def fountain(): # done
     while True:
-        global Your_Money
+        global Your_Money, secretjump
         Clear()
         print(FOUNTAIN)
         print('You walk up to the fountain...')
@@ -5634,8 +5939,13 @@ def fountain(): # done
                 time.sleep(0.25)
                 continue
         elif Fountain_action == 'jump':
+            if secretjump == False:
+                print('You Found a Secret!!')
+                secretjump = True
+            else:
+                pass
             print('You elegantly leap into the fountain...')
-            time.sleep(0.75)
+            time.sleep(1.5)
             if randint(0,100) >= 93:
                 print('You Found a Quarter in the fountain!')
                 Your_Money += 0.25
@@ -5955,6 +6265,7 @@ def bird_house(): # done
             continue
 while True:
     print('Zoom out terminal when viewing animals for the best experience!')
+    print('Please make sure to explore EVERYWHERE (advised but not forced)!')
     h = input('Proceed?: ')
     print(ZOO_ENTRANCE,end='')
     time.sleep(1)
@@ -6054,16 +6365,21 @@ while True:
         print('Travelling to Aquarium')
         time.sleep(2)
         aquarium()
-    elif Answer in ['bird house','bird']:
+    elif Answer in ['bird house','bird','the bird house']:
         print('Travelling to Bird House')
         time.sleep(2)
         bird_house()
     elif Answer in ['northern river','river','northern']:
         print(WIP)
+        if secretriver == False:
+            print('You Found a Secret!!')
+            secretriver = True
+        else:
+            pass
         time.sleep(2)
         print('This place is not finished yet...')
         time.sleep(1)
-        print('This programmar sucks...')
+        print('This coder sucks...')
         time.sleep(1.5)
     else:
         continue

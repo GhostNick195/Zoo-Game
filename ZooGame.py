@@ -3,6 +3,7 @@ import os
 import time
 from random import randint
 from sys import exit
+# region Classes
 def Clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 class Savanna_Animal:
@@ -1785,7 +1786,8 @@ def see_macaw():
             print('Something went wrong')
             time.sleep(0.5)
             continue
-
+# endregion
+# region Variables
 Normal_Ticket_Price = randint(10,15)
 Sale_Ticket_Price = randint(2,5)
 Your_Money = randint(35,80)
@@ -1817,7 +1819,8 @@ A1 = A2 = A3 = A4 = A5 = A6 = A7 = A8 = A9 = A10 = A11 = A12 = A13 = A14 = A15 =
 SeenAnimals = 0
 SeenAnimalCondition = [A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8 , A9 , A10 , A11 , A12 , A13 , A14 , A15 , A16 , A17 , A18 , A19 , A20 , A21 , A22 , A23 , A24 , A25 , A26 , A27 , A28 , A29 , A30 , A31]
 secrets_found = 0
-
+# endregion
+# region Graphics
 WIP = r"""
                               ..
                            -@@@@@@@@@@@#-.
@@ -4761,9 +4764,8 @@ o##ooooooo#oo########@@@@###@@@@@@#####@@##########o####oooo###ooo#o#oooo#######
                                     -=oo#################################oo=-
                                                       ......
 """
-
-
-
+# endregion
+# region Graphic Functions
 def penguin_plush():
     while True:
         Clear()
@@ -5084,7 +5086,8 @@ def pastry():
             print('Something went wrong')
             time.sleep(0.5)
             continue
-
+# endregion
+# region Main Area Functions
 def search_inventory(): 
     while True:
         Clear()
@@ -5963,7 +5966,7 @@ There is 31 animals in the zoo!
 Fountain, item, and animal graphics were made with an ascii image converter.
 Your money is randomised from $35 to $80.
 I tried to make the game have humor...
-The entire file is about 6400 lines of code, about half are dedicated to graphics. The other half is code.
+The entire file is about 6500 lines of text, about half are dedicated to graphics. The other half is code.
 There is 3 secrets in the game.
 Yes, I know a pelican eel could not survive in a aquarium at sea level pressure.
 The file is very big, so that means there could be a bug somewhere that I do not know about.''')
@@ -6333,6 +6336,8 @@ def bird_house(): # done
             break
         else:
             continue
+# endregion
+# region Running Code
 while True:
     print('Zoom out terminal when viewing animals for the best experience!')
     print('Please make sure to explore EVERYWHERE (advised but not forced)!')
@@ -6455,3 +6460,4 @@ while True:
         time.sleep(1.5)
     else:
         continue
+# endregion

@@ -39,7 +39,7 @@ def see_rhino():
             print('You admire the Rhino...')
             time.sleep(0.5)
             print('It stares...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -94,7 +94,7 @@ def see_ocelot():
             print('You admire the ocelot...')
             time.sleep(0.5)
             print('The ocelot admires you back...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -148,7 +148,7 @@ def see_wolf():
             print('You admire the Wolf...')
             time.sleep(0.5)
             print('It looks back with a silly look...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -206,7 +206,7 @@ def see_pangolin():
             print('You admire the pangolin...')
             time.sleep(0.5)
             print('The pangolin rolls into a ball as if it is scared of you...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -271,7 +271,7 @@ def see_lynx():
             print('You admire the lynx...')
             time.sleep(0.5)
             print('The lynx quietly hisses...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -325,7 +325,7 @@ def see_capybara():
             print('You admire the capybara...')
             time.sleep(0.5)
             print('The capybara is just straight chillin...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -355,7 +355,7 @@ def see_capybara():
             print('Something went wrong')
             time.sleep(0.5)
             continue
-Silverback_Gorilla = Forest_Animal("Titan", 11,
+Silverback_Gorilla = Forest_Animal("Harambe", 11,
 r"""
 Scientific Name: 
    Gorilla gorilla (Western Gorilla) or Gorilla beringei (Eastern Gorilla).
@@ -377,7 +377,7 @@ def see_gorilla():
             print('You admire the silverback...')
             time.sleep(0.5)
             print('The gorilla looks off into the distance...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -485,7 +485,7 @@ def see_jaguar():
             print('You admire the jaguar...')
             time.sleep(0.5)
             print('The jaguar dances...?')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -547,7 +547,7 @@ def see_indian_gharial():
             print('You admire the crocodile...')
             time.sleep(0.5)
             print('The crocodile glares back with an intense feeling...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -601,7 +601,7 @@ def see_axolotl():
             print('You admire the axolotl...')
             time.sleep(0.5)
             print('The axolotl looks excited to see you...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -655,7 +655,7 @@ def see_jerboa():
             print('You admire the jeroboa...')
             time.sleep(0.5)
             print('The jerboa hops up and down...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -709,7 +709,7 @@ def see_newt():
             print('You admire the crested newt...')
             time.sleep(0.5)
             print('The newt shows off his crest...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -764,7 +764,7 @@ def see_mata():
             print('You admire the mata mata...')
             time.sleep(0.5)
             print('The mata mata snaps at you...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -818,7 +818,7 @@ def see_worm_lizard():
             print('You admire the worm lizard...')
             time.sleep(0.5)
             print('The worm lizard slithers around...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -871,7 +871,7 @@ def see_sand_boa():
         if Action == 'admire':
             print('You admire the sand boa...')
             time.sleep(0.5)
-            print('The sand boa looks back...but you can not tell which eye is looking...')
+            print('The sand boa looks back...but you can not tell which eye you should look into...')
             time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
@@ -927,7 +927,7 @@ def see_python():
             print('You admire the python...')
             time.sleep(0.5)
             print('The python has a murderous intent in his eyes...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -981,7 +981,7 @@ def see_mountain_chicken():
             print('You admire the frog...')
             time.sleep(0.5)
             print('The frog thinks you look like a chicken...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1035,7 +1035,7 @@ def see_chameleon():
             print('You admire the chameleon...')
             time.sleep(0.5)
             print('The chameleon taps his horns on the glass...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1089,7 +1089,7 @@ def see_snake_turtle():
             print('You admire the turtle...')
             time.sleep(0.5)
             print('The turtle wiggles her head around...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1126,7 +1126,7 @@ class Aquarium_Animal:
         self.age = age
         self.description = description
         self.status = endangered_status
-Manta_Ray = Aquarium_Animal("Barnaby",14, #male
+Manta_Ray = Aquarium_Animal("Kyogre",14, #male
 r"""
 Scientific Name: 
    Mobula birostris
@@ -1149,7 +1149,7 @@ def see_manta_ray():
             print('You admire the manta...')
             time.sleep(0.5)
             print('He majestically swims around...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1203,7 +1203,7 @@ def see_lamprey():
             print('You admire the lamprey...')
             time.sleep(0.5)
             print('She flashes her teeth at you...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1256,7 +1256,7 @@ def see_bichir():
             print('You admire the birchir...')
             time.sleep(0.5)
             print('He swims behind some rocks...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1309,7 +1309,7 @@ def see_pelican_eel():
             print('You admire the eel...')
             time.sleep(0.5)
             print('It looks ready to swallow you whole...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1363,7 +1363,7 @@ def see_blue_dragon():
             print('You admire the blue dragon...')
             time.sleep(0.5)
             print("It slightly wiggles...")
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1416,7 +1416,7 @@ def see_sunfish():
             print('You admire the sunfish...')
             time.sleep(0.5)
             print('He swims into the glass...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1468,7 +1468,7 @@ def see_giant_isopod():
             print('You admire the isopod...')
             time.sleep(0.5)
             print('She wiggles her claws...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1530,7 +1530,7 @@ def see_shoebill():
             print('You admire the shoebill...')
             time.sleep(0.5)
             print('Your soul has been tainted...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1585,7 +1585,7 @@ def see_pukeko():
             print('You admire the pukeko...')
             time.sleep(0.5)
             print('It looks dumb...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1639,7 +1639,7 @@ def see_potoo():
             print('You admire the potoo...')
             time.sleep(0.5)
             print('His pupils widen...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -1693,7 +1693,7 @@ def see_macaw():
             print('You admire the macaw...')
             time.sleep(0.5)
             print('He says he wants a cracker...')
-            time.sleep(1.5)
+            time.sleep(1.75)
             continue
         elif Action in ['info','get info','get']:
             get_info = input('What do you want to know? (name/age/description/status): ')
@@ -5890,10 +5890,11 @@ Gate #1, Gate #2, The Savanna, The Forest''')
         elif Question in ['game information','info','game info','game','code']:
             print('''Most things are randomised when possible. 
 IF YOU WANT TO END CODE, PLEASE PLEASE GO TO TICKETS AREA AS THAT SHOULD BE HOW YOU EXIT!!!
+There is 31 animals in the zoo!
 Fountain, item, and animal graphics were made with an ascii image converter.
 Your money is randomised from $35 to $80.
 I tried to make the game have humor...
-The entire file is about 6100 lines of code, about half are dedicated to graphics. The other half is code.
+The entire file is about 6400 lines of code, about half are dedicated to graphics. The other half is code.
 There is 3 secrets in the game.
 Yes, I know a pelican eel could not survive in a aquarium at sea level pressure.
 The file is very big, so that means there could be a bug somewhere that I do not know about.''')
@@ -6150,7 +6151,7 @@ def reptile_house(): # done
             time.sleep(0.5)
             see_jerboa()
             continue
-        elif travel_to in ['crocodile','indian crocodile','gharial crocodile','gharial','indian gharial crocodile']:
+        elif travel_to in ['crocodile','indian crocodile','gharial crocodile','gharial','indian gharial crocodile','croc']:
             time.sleep(0.5)
             see_indian_gharial()
             continue
@@ -6178,7 +6179,7 @@ def reptile_house(): # done
             time.sleep(0.5)
             see_python()
             continue
-        elif travel_to in ["jackson's chamelon",'chameleon']:
+        elif travel_to in ["jackson's chameleon",'chameleon']:
             time.sleep(0.5)
             see_chameleon()
             continue

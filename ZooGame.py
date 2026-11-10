@@ -30,6 +30,8 @@ Lifespan:
    35 - 50 years""", 
 "Critically Endangered (IUCN Red List)")
 def see_rhino():
+    global A1
+    A1 = True
     while True:
         Clear()
         print(RHINO)
@@ -85,6 +87,8 @@ Life Span:
     7 - 13 years""",
  "Listed as Least Concern globally, but critically endangered in the United States IUCN Red List.")
 def see_ocelot():
+    global A2
+    A2 = True
     while True:
         Clear()
         print(OCELOT)
@@ -139,6 +143,8 @@ Life Span:
    10 - 12 years""",
 "Globally classified as Endangered on the IUCN Red List")
 def see_wolf():
+    global A3
+    A3 = True
     while True:
         Clear()
         print(PAINTED_WOLF)
@@ -197,6 +203,8 @@ Lifespan
    Up to 20 years in the wild (rarely survives long in captivity)""",
 "Ranging from Vulnerable to Critically Endangered across all 8 species (IUCN Red List)")
 def see_pangolin():
+    global A4
+    A4 = True
     while True:
         Clear()
         print(PANGOLIN)
@@ -262,7 +270,9 @@ Diet:
    with a specialized evolutionary dependence on lagomorphs like the snowshoe hare.
 """, "Iberian Lynx: Vulnerable, Canada Lynx: Least Concern, Eurasian Lynx: Least Concern, Lynx Lynx: Least Concern. IUCN Status")
 def see_lynx():
-     while True:
+    global A5
+    A5 = True
+    while True:
         Clear()
         print(LYNX)
         time.sleep(0.2)
@@ -316,7 +326,9 @@ Lifespan:
 Behavior: 
    Highly social, gentle, and herd-dwelling animals that thrive in wetlands, marshes, and dense forests near water sources.""", "Least Concern on the IUCN Red List.")
 def see_capybara():
-     while True:
+    global A6
+    A6 = True
+    while True:
         Clear()
         print(CAPYBARA)
         time.sleep(0.2)
@@ -368,7 +380,9 @@ Average Weight:
 Average Lifespan: 
    35 - 40 years in the wild, and up to 50+ years in captivity.""", "Almost all species of gorrila are critiacally endangered, IUCN status list.")
 def see_gorilla():
-     while True:
+    global A7
+    A7 = True
+    while True:
         Clear()
         print(SILVERBACK_GORILLA)
         time.sleep(0.2)
@@ -422,7 +436,9 @@ Habitat & Range:
 Behavior: 
    Renowned as solitary, highly territorial, and incredibly strong apex scavengers and hunters capable of taking down prey many times their size.""", "Least Concern IUCN status.")
 def see_wolverine():
-     while True:
+    global A8
+    A8 = True
+    while True:
         Clear()
         print(WOLVERINE)
         time.sleep(0.2)
@@ -476,7 +492,9 @@ Average Weight:
 Average Lifespan:
    12-15 years in the wild; can exceed 20 years in captivity.""", "Near Threatened on the IUCN Red List.")
 def see_jaguar():
-     while True:
+    global A9
+    A9 = True
+    while True:
         Clear()
         print(JAGUAR)
         time.sleep(0.2)
@@ -538,7 +556,9 @@ Avg Weight:
 Avg Life Span:
    40-50 years""","IUCN Status: Critically Endangered")
 def see_indian_gharial():
-     while True:
+    global A10
+    A10 = True
+    while True:
         Clear()
         print(INDIAN_GHARIAL)
         time.sleep(0.2)
@@ -592,7 +612,9 @@ Avg Weight:
 Avg Life Span: 
    10-15 years""", "IUCN Status: Critically Endangered") 
 def see_axolotl():
-     while True:
+    global A11
+    A11 = True
+    while True:
         Clear()
         print(AXOLOTL)
         time.sleep(0.2)
@@ -646,7 +668,9 @@ Avg Weight:
 Avg Life Span: 
    2-4 years""","IUCN Status: Species-dependent (mostly Least Concern / Data Deficient)")
 def see_jerboa():
-     while True:
+    global A12
+    A12 = True
+    while True:
         Clear()
         print(JERBOA)
         time.sleep(0.2)
@@ -700,7 +724,9 @@ Avg Weight:
 Avg Life Span: 
    8-12 years""","IUCN Status: Near Threatened")
 def see_newt():
-     while True:
+    global A13
+    A13 = True
+    while True:
         Clear()
         print(CRESTED_NEWT)
         time.sleep(0.2)
@@ -755,7 +781,9 @@ Avg Weight:
 Avg Life Span: 
    15-30 years""","IUCN Status: Least Concern")
 def see_mata():
-     while True:
+    global A14
+    A14 = True
+    while True:
         Clear()
         print(MATA_MATA)
         time.sleep(0.2)
@@ -809,7 +837,9 @@ Avg Weight:
 Avg Life Span:
    5-10 years""","IUCN Status: Species-dependent (mostly Least Concern)")
 def see_worm_lizard():
-     while True:
+    global A31
+    A31 = True
+    while True:
         Clear()
         print(WORM_LIZARD)
         time.sleep(0.2)
@@ -863,7 +893,9 @@ Avg Weight:
 Avg Life Span: 
    15-20 years""","IUCN Status: Least Concern")
 def see_sand_boa():
-     while True:
+    global A15
+    A15 = True
+    while True:
         Clear()
         print(SAND_BOA)
         time.sleep(0.2)
@@ -918,7 +950,9 @@ Avg Weight:
 Avg Life Span: 
    20-25 years""", "IUCN Status: Vulnerable")
 def see_python():
-     while True:
+    global A16
+    A16 = True
+    while True:
         Clear()
         print(BURMESE_PYTHON)
         time.sleep(0.2)
@@ -972,7 +1006,9 @@ Avg Weight:
 Avg Life Span: 
    10-12 years""","IUCN Status: Critically Endangered")
 def see_mountain_chicken():
-     while True:
+    global A17
+    A17 = True
+    while True:
         Clear()
         print(MOUNTAIN_CHICKEN)
         time.sleep(0.2)
@@ -1026,7 +1062,9 @@ Avg Weight:
 Avg Life Span:
    5-10 years""", "IUCN Status: Least Concern")
 def see_chameleon():
-     while True:
+    global A18
+    A18 = True
+    while True:
         Clear()
         print(CHAMELEON)
         time.sleep(0.2)
@@ -1080,7 +1118,9 @@ Description:
 Avg Life Span: 
    30-40 years""","IUCN Status: Species-dependent (ranging from Near Threatened to Critically Endangered)")
 def see_snake_turtle():
-     while True:
+    global A19
+    A19 = True
+    while True:
         Clear()
         print(SNAKE_NECKED_TURTLE)
         time.sleep(0.2)
@@ -1140,7 +1180,9 @@ Avg Lifespan:
    ~40 years""",
 "IUCN Status: Endangered")
 def see_manta_ray():
-     while True:
+    global A20
+    A20 = True
+    while True:
         Clear()
         print(MANTA_RAY)
         time.sleep(0.2)
@@ -1194,7 +1236,9 @@ Avg Lifespan:
     5 - 9 years""",
 "IUCN Status: Least Concern")
 def see_lamprey():
-     while True:
+    global A21
+    A21 = True
+    while True:
         Clear()
         print(LAMPREY)
         time.sleep(0.2)
@@ -1247,7 +1291,9 @@ Avg Weight:
 Avg Lifespan: 
    15 - 30 years""","IUCN Status: Least Concern")
 def see_bichir():
-     while True:
+    global A22
+    A22 = True
+    while True:
         Clear()
         print(BICHIR)
         time.sleep(0.2)
@@ -1300,7 +1346,9 @@ Avg Weight:
 Avg Lifespan: 
    up to 85+ years""","IUCN Status: Least Concern")
 def see_pelican_eel():
-     while True:
+    global A23
+    A23 = True
+    while True:
         Clear()
         print(PELICAN_EEL)
         time.sleep(0.2)
@@ -1354,7 +1402,9 @@ Avg Weight:
 Avg Lifespan: 
    1 month to 1 year""", "IUCN Status: Not Evaluated")
 def see_blue_dragon():
-     while True:
+    global A24
+    A24 = True
+    while True:
         Clear()
         print(BLUE_DRAGON)
         time.sleep(0.2)
@@ -1407,7 +1457,9 @@ Avg Weight:
 Avg Lifespan: 
    20 - 23 years""", "IUCN Status: Vulnerable")
 def see_sunfish():
-     while True:
+    global A25
+    A25 = True
+    while True:
         Clear()
         print(SUNFISH)
         time.sleep(0.2)
@@ -1459,7 +1511,9 @@ Avg Weight:
 Avg Lifespan: 
    40 - 60 years""","IUCN Status: Not Evaluated")
 def see_giant_isopod():
-     while True:
+    global A26
+    A26 = True
+    while True:
         Clear()
         print(GIANT_ISOPOD)
         time.sleep(0.2)
@@ -1521,7 +1575,9 @@ Avg Lifespan:
    35-50 years
 ""","IUCN Status: Vulnerable")
 def see_shoebill():
-     while True:
+    global A27
+    A27 = True
+    while True:
         Clear()
         print(SHOEBILL)
         time.sleep(0.2)
@@ -1576,7 +1632,9 @@ Avg Lifespan:
    8-10 years
 ""","IUCN Status: Least Concern")
 def see_pukeko():
-     while True:
+    global A28
+    A28 = True
+    while True:
         Clear()
         print(PUKEKO)
         time.sleep(0.2)
@@ -1630,7 +1688,9 @@ Avg Lifespan:
    10-12 years
 ""","IUCN Status: Least Concern")
 def see_potoo():
-     while True:
+    global A29
+    A29 = True
+    while True:
         Clear()
         print(POTOO)
         time.sleep(0.2)
@@ -1684,7 +1744,9 @@ Avg Lifespan:
    40-50 years
 ""","IUCN Status: Least Concern")
 def see_macaw():
-     while True:
+    global A30
+    A30 = True
+    while True:
         Clear()
         print(MACAW)
         time.sleep(0.2)
@@ -1749,11 +1811,11 @@ GATE2_PASS = False
 Inventory = []
 Sale = False
 Total_Cost = 00.00
-Stole = False
-StealAttempt = False
-secretsteal = False
-secretjump = False
-secretriver = False
+StealAttempt = Stole = False
+secretsteal = secretjump = secretriver = False
+A1 = A2 = A3 = A4 = A5 = A6 = A7 = A8 = A9 = A10 = A11 = A12 = A13 = A14 = A15 = A16 = A17 = A18 = A19 = A20 = A21 = A22 = A23 = A24 = A25 = A26 = A27 = A28 = A29 = A30 = A31 = False
+SeenAnimals = 0
+SeenAnimalCondition = [A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8 , A9 , A10 , A11 , A12 , A13 , A14 , A15 , A16 , A17 , A18 , A19 , A20 , A21 , A22 , A23 , A24 , A25 , A26 , A27 , A28 , A29 , A30 , A31]
 secrets_found = 0
 
 WIP = r"""
@@ -1889,7 +1951,7 @@ ZOO_MAIN_AREA = r"""
                               |:|           '-----+:+-----'           |:|
              /========*SOUTH WEST*========\       |:|       /========*SOUTH EAST*========\
             |                              |      |:|      |                              |
-            |   [M] The Reptiles           |      |:|      |    [M] The Bird House        |
+            |   [M] The Reptiles (& amp)   |      |:|      |    [M] The Bird House        |
             |   [M] The Aquarium           |------+ +------|                              |
             |                              :::::::::::::::::                              | 
             \=====================================|:|=====================================/
@@ -5405,7 +5467,7 @@ would you like to checkout? (y/n):
                     if Penguin_Plush_Count != 0:
                         print('You attempt to steal the penguin plush...')
                         time.sleep(1)
-                        if randint(1,100) >= 98:
+                        if randint(1,100) >= 93:
                             Stole = True
                             Inventory.append('Penguin Plush')
                             Penguin_Plush_Count -= 1
@@ -5428,7 +5490,7 @@ would you like to checkout? (y/n):
                     if Tiger_Plush_Count != 0:
                         print('You attempt to steal the tiger plush...')
                         time.sleep(1)
-                        if randint(1,100) >= 98:
+                        if randint(1,100) >= 93:
                             Stole = True
                             Inventory.append('Tiger Plush')
                             Tiger_Plush_Count -= 1
@@ -5451,7 +5513,7 @@ would you like to checkout? (y/n):
                     if Elephant_Plush_Count != 0:
                         print('You attempt to steal the elephant plush...')
                         time.sleep(1)
-                        if randint(1,100) >= 98:
+                        if randint(1,100) >= 93:
                             Stole = True
                             Inventory.append('Elephant Plush')
                             Elephant_Plush_Count -= 1
@@ -5474,7 +5536,7 @@ would you like to checkout? (y/n):
                     if Koala_Plush_Count != 0:
                         print('You attempt to steal the elephant plush...')
                         time.sleep(1)
-                        if randint(1,100) >= 98:
+                        if randint(1,100) >= 93:
                             Stole = True
                             Inventory.append('Koala Plush')
                             Koala_Plush_Count -= 1
@@ -5497,7 +5559,7 @@ would you like to checkout? (y/n):
                     if Giraffe_Plush_Count != 0:
                         print('You attempt to steal the elephant plush...')
                         time.sleep(1)
-                        if randint(1,100) >= 98:
+                        if randint(1,100) >= 93:
                             Stole = True
                             Inventory.append('Giraffe Plush')
                             Giraffe_Plush_Count -= 1
@@ -5520,7 +5582,7 @@ would you like to checkout? (y/n):
                     if Monkey_Plush_Count != 0:
                         print('You attempt to steal the monkey plush...')
                         time.sleep(1)
-                        if randint(1,100) >= 98:
+                        if randint(1,100) >= 93:
                             Stole = True
                             Inventory.append('Monkey Plush')
                             Monkey_Plush_Count -= 1
@@ -5548,7 +5610,7 @@ would you like to checkout? (y/n):
                 if stealkeychain == 'y':
                     print('You attempt to steal a keychain...')
                     time.sleep(1)
-                    if randint(1,100) >= 98:
+                    if randint(1,100) >= 93:
                         Stole = True
                         Inventory.append('Python Zoo Keychain')
                         Keychain_Count -= 1
@@ -5576,7 +5638,7 @@ would you like to checkout? (y/n):
                 if stealpostcard == 'y':
                     print('You attempt to steal a postcard...')
                     time.sleep(1)
-                    if randint(1,100) >= 98:
+                    if randint(1,100) >= 93:
                         Stole = True
                         Inventory.append('Python Zoo Postcard')
                         Postcard_Count -= 1
@@ -5603,7 +5665,7 @@ would you like to checkout? (y/n):
                 if stealapparel in ['safari','safarishirt','safari shirt','safari apparel','safariapparel']:
                     print('You attempt to steal a safari shirt...')
                     time.sleep(1)
-                    if randint(1,100) >= 98:
+                    if randint(1,100) >= 93:
                         Stole = True
                         Inventory.append('Safari Shirt')
                         Safari_Apparel_Count -= 1
@@ -5621,7 +5683,7 @@ would you like to checkout? (y/n):
                 elif stealapparel in ['giraffe','giraffe apparel','giraffeapparel','giraffeshirt','giraffe shirt']:
                     print('You attempt to steal a safari shirt...')
                     time.sleep(1)
-                    if randint(1,100) >= 98:
+                    if randint(1,100) >= 93:
                         Stole = True
                         Inventory.append('Giraffe Shirt')
                         Giraffe_Apparel_Count -= 1
@@ -5639,7 +5701,7 @@ would you like to checkout? (y/n):
                 elif stealapparel in ['tiger','tigershirt','tiger shirt','tiger apparel', 'tigerapparel']:
                     print('You attempt to steal a safari shirt...')
                     time.sleep(1)
-                    if randint(1,100) >= 98:
+                    if randint(1,100) >= 93:
                         Stole = True
                         Inventory.append('Tiger Shirt')
                         Safari_Apparel_Count -= 1
@@ -5675,6 +5737,17 @@ def tickets(): # done
     time.sleep(1)
     Go_Home = input('Would you like to go home? (y/n): ').lower()
     if Go_Home == 'y':
+        for seen in SeenAnimalCondition:
+            if seen == True:
+                SeenAnimals += 1
+            else:
+                pass
+        if secretsteal == True:
+            secrets_found += 1
+        if secretriver == True:
+            secrets_found += 1
+        if secretjump == True:
+            secrets_found += 1
         print("You decided that you've had enough zoo time for the day and went home...")
         time.sleep(1)
         if StealAttempt and Stole == True:
@@ -5698,12 +5771,8 @@ def tickets(): # done
         else:
             pass
         time.sleep(2)
-        if secretsteal == True:
-            secrets_found += 1
-        if secretriver == True:
-            secrets_found += 1
-        if secretjump == True:
-            secrets_found += 1
+        print(f"You saw {SeenAnimals}/31 animals!")
+        time.sleep(1)
         print(f"You found {secrets_found}/3 secrets!")
         time.sleep(2)
         exit()
@@ -6381,6 +6450,8 @@ while True:
         print('This place is not finished yet...')
         time.sleep(1)
         print('This coder sucks...')
+        time.sleep(1.5)
+        print('Why is this even a secret??')
         time.sleep(1.5)
     else:
         continue

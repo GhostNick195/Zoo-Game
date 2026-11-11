@@ -3,6 +3,38 @@ import os
 import time
 from random import randint
 from sys import exit
+# region Variables
+Normal_Ticket_Price = randint(10,15)
+Sale_Ticket_Price = randint(2,5)
+Your_Money = randint(35,80)
+Penguin_Plush_Count = randint(1,3)
+Tiger_Plush_Count = randint(1,4)
+Koala_Plush_Count = randint(1,2)
+Giraffe_Plush_Count = randint(1,2)
+Elephant_Plush_Count = randint(1,2)
+Monkey_Plush_Count = randint(2,4)
+Safari_Apparel_Count = randint(2,3)
+Giraffe_Apparel_Count = randint(2,3)
+Tiger_Apparel_Count = randint(2,3)
+Zoo_Guide_Book_Count = randint(4,6)
+Keychain_Count = randint(13,18)
+Postcard_Count = randint (8,12)
+Zoo_Guide_Book_Count = randint(7,10)
+Help_desk_attendent_lines = ["No, you cannot pet the geese.", "No, we don't rent out the capybaras for birthday parties.",
+ "No, the monkeys didn't steal your keys, but check your pockets anyway.", "If a bird poops on you, it's technically good luck.",
+  "If you drop your phone in the alligator exhibit, it belongs to the alligator now.","The hyenas aren't laughing at you. Well, they might be, but it's nothing personal.",
+  "The Hippo Cam is down because a hippo sat on it. We are working on a solution.","I heard that there is a secret command called 'Jump' at the fountain...","I miss mae...if only I could see her again...Anyways, what's up?"]
+GATE1_PASS = False
+GATE2_PASS = False
+Inventory = []
+Sale = False
+Total_Cost = 00.00
+StealAttempt = Stole = False
+secretsteal = secretjump = secretriver = False
+SeenAnimalCondition = [False] * 31
+secrets_found = 0
+SeenAnimals = 0
+# endregion
 # region Classes
 def Clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -31,8 +63,8 @@ Lifespan:
    35 - 50 years""", 
 "Critically Endangered (IUCN Red List)")
 def see_rhino():
-    global A1
-    A1 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[0] = True
     while True:
         Clear()
         print(RHINO)
@@ -88,8 +120,8 @@ Life Span:
     7 - 13 years""",
  "Listed as Least Concern globally, but critically endangered in the United States IUCN Red List.")
 def see_ocelot():
-    global A2
-    A2 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[1] = True
     while True:
         Clear()
         print(OCELOT)
@@ -144,8 +176,8 @@ Life Span:
    10 - 12 years""",
 "Globally classified as Endangered on the IUCN Red List")
 def see_wolf():
-    global A3
-    A3 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[2] = True
     while True:
         Clear()
         print(PAINTED_WOLF)
@@ -204,8 +236,8 @@ Lifespan
    Up to 20 years in the wild (rarely survives long in captivity)""",
 "Ranging from Vulnerable to Critically Endangered across all 8 species (IUCN Red List)")
 def see_pangolin():
-    global A4
-    A4 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[3] = True
     while True:
         Clear()
         print(PANGOLIN)
@@ -271,8 +303,8 @@ Diet:
    with a specialized evolutionary dependence on lagomorphs like the snowshoe hare.
 """, "Iberian Lynx: Vulnerable, Canada Lynx: Least Concern, Eurasian Lynx: Least Concern, Lynx Lynx: Least Concern. IUCN Status")
 def see_lynx():
-    global A5
-    A5 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[4] = True
     while True:
         Clear()
         print(LYNX)
@@ -327,8 +359,8 @@ Lifespan:
 Behavior: 
    Highly social, gentle, and herd-dwelling animals that thrive in wetlands, marshes, and dense forests near water sources.""", "Least Concern on the IUCN Red List.")
 def see_capybara():
-    global A6
-    A6 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[5] = True
     while True:
         Clear()
         print(CAPYBARA)
@@ -381,8 +413,8 @@ Average Weight:
 Average Lifespan: 
    35 - 40 years in the wild, and up to 50+ years in captivity.""", "Almost all species of gorrila are critiacally endangered, IUCN status list.")
 def see_gorilla():
-    global A7
-    A7 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[6] = True
     while True:
         Clear()
         print(SILVERBACK_GORILLA)
@@ -437,8 +469,8 @@ Habitat & Range:
 Behavior: 
    Renowned as solitary, highly territorial, and incredibly strong apex scavengers and hunters capable of taking down prey many times their size.""", "Least Concern IUCN status.")
 def see_wolverine():
-    global A8
-    A8 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[7] = True
     while True:
         Clear()
         print(WOLVERINE)
@@ -493,8 +525,8 @@ Average Weight:
 Average Lifespan:
    12-15 years in the wild; can exceed 20 years in captivity.""", "Near Threatened on the IUCN Red List.")
 def see_jaguar():
-    global A9
-    A9 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[8] = True
     while True:
         Clear()
         print(JAGUAR)
@@ -557,8 +589,8 @@ Avg Weight:
 Avg Life Span:
    40-50 years""","IUCN Status: Critically Endangered")
 def see_indian_gharial():
-    global A10
-    A10 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[9] = True
     while True:
         Clear()
         print(INDIAN_GHARIAL)
@@ -613,8 +645,8 @@ Avg Weight:
 Avg Life Span: 
    10-15 years""", "IUCN Status: Critically Endangered") 
 def see_axolotl():
-    global A11
-    A11 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[10] = True
     while True:
         Clear()
         print(AXOLOTL)
@@ -669,8 +701,8 @@ Avg Weight:
 Avg Life Span: 
    2-4 years""","IUCN Status: Species-dependent (mostly Least Concern / Data Deficient)")
 def see_jerboa():
-    global A12
-    A12 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[11] = True
     while True:
         Clear()
         print(JERBOA)
@@ -725,8 +757,8 @@ Avg Weight:
 Avg Life Span: 
    8-12 years""","IUCN Status: Near Threatened")
 def see_newt():
-    global A13
-    A13 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[12] = True
     while True:
         Clear()
         print(CRESTED_NEWT)
@@ -782,8 +814,8 @@ Avg Weight:
 Avg Life Span: 
    15-30 years""","IUCN Status: Least Concern")
 def see_mata():
-    global A14
-    A14 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[13] = True
     while True:
         Clear()
         print(MATA_MATA)
@@ -838,8 +870,8 @@ Avg Weight:
 Avg Life Span:
    5-10 years""","IUCN Status: Species-dependent (mostly Least Concern)")
 def see_worm_lizard():
-    global A31
-    A31 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[14] = True
     while True:
         Clear()
         print(WORM_LIZARD)
@@ -894,8 +926,8 @@ Avg Weight:
 Avg Life Span: 
    15-20 years""","IUCN Status: Least Concern")
 def see_sand_boa():
-    global A15
-    A15 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[15] = True
     while True:
         Clear()
         print(SAND_BOA)
@@ -951,8 +983,8 @@ Avg Weight:
 Avg Life Span: 
    20-25 years""", "IUCN Status: Vulnerable")
 def see_python():
-    global A16
-    A16 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[16] = True
     while True:
         Clear()
         print(BURMESE_PYTHON)
@@ -1007,8 +1039,8 @@ Avg Weight:
 Avg Life Span: 
    10-12 years""","IUCN Status: Critically Endangered")
 def see_mountain_chicken():
-    global A17
-    A17 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[17] = True
     while True:
         Clear()
         print(MOUNTAIN_CHICKEN)
@@ -1063,8 +1095,8 @@ Avg Weight:
 Avg Life Span:
    5-10 years""", "IUCN Status: Least Concern")
 def see_chameleon():
-    global A18
-    A18 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[18] = True
     while True:
         Clear()
         print(CHAMELEON)
@@ -1119,8 +1151,8 @@ Description:
 Avg Life Span: 
    30-40 years""","IUCN Status: Species-dependent (ranging from Near Threatened to Critically Endangered)")
 def see_snake_turtle():
-    global A19
-    A19 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[19] = True
     while True:
         Clear()
         print(SNAKE_NECKED_TURTLE)
@@ -1181,8 +1213,8 @@ Avg Lifespan:
    ~40 years""",
 "IUCN Status: Endangered")
 def see_manta_ray():
-    global A20
-    A20 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[20] = True
     while True:
         Clear()
         print(MANTA_RAY)
@@ -1237,8 +1269,8 @@ Avg Lifespan:
     5 - 9 years""",
 "IUCN Status: Least Concern")
 def see_lamprey():
-    global A21
-    A21 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[21] = True
     while True:
         Clear()
         print(LAMPREY)
@@ -1292,8 +1324,8 @@ Avg Weight:
 Avg Lifespan: 
    15 - 30 years""","IUCN Status: Least Concern")
 def see_bichir():
-    global A22
-    A22 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[22] = True
     while True:
         Clear()
         print(BICHIR)
@@ -1347,8 +1379,8 @@ Avg Weight:
 Avg Lifespan: 
    up to 85+ years""","IUCN Status: Least Concern")
 def see_pelican_eel():
-    global A23
-    A23 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[23] = True
     while True:
         Clear()
         print(PELICAN_EEL)
@@ -1403,8 +1435,8 @@ Avg Weight:
 Avg Lifespan: 
    1 month to 1 year""", "IUCN Status: Not Evaluated")
 def see_blue_dragon():
-    global A24
-    A24 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[24] = True
     while True:
         Clear()
         print(BLUE_DRAGON)
@@ -1458,8 +1490,8 @@ Avg Weight:
 Avg Lifespan: 
    20 - 23 years""", "IUCN Status: Vulnerable")
 def see_sunfish():
-    global A25
-    A25 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[25] = True
     while True:
         Clear()
         print(SUNFISH)
@@ -1512,8 +1544,8 @@ Avg Weight:
 Avg Lifespan: 
    40 - 60 years""","IUCN Status: Not Evaluated")
 def see_giant_isopod():
-    global A26
-    A26 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[26] = True
     while True:
         Clear()
         print(GIANT_ISOPOD)
@@ -1576,8 +1608,8 @@ Avg Lifespan:
    35-50 years
 ""","IUCN Status: Vulnerable")
 def see_shoebill():
-    global A27
-    A27 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[27] = True
     while True:
         Clear()
         print(SHOEBILL)
@@ -1633,8 +1665,8 @@ Avg Lifespan:
    8-10 years
 ""","IUCN Status: Least Concern")
 def see_pukeko():
-    global A28
-    A28 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[28] = True
     while True:
         Clear()
         print(PUKEKO)
@@ -1689,8 +1721,8 @@ Avg Lifespan:
    10-12 years
 ""","IUCN Status: Least Concern")
 def see_potoo():
-    global A29
-    A29 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[29] = True
     while True:
         Clear()
         print(POTOO)
@@ -1745,8 +1777,8 @@ Avg Lifespan:
    40-50 years
 ""","IUCN Status: Least Concern")
 def see_macaw():
-    global A30
-    A30 = True
+    global SeenAnimalCondition
+    SeenAnimalCondition[30] = True
     while True:
         Clear()
         print(MACAW)
@@ -1786,39 +1818,6 @@ def see_macaw():
             print('Something went wrong')
             time.sleep(0.5)
             continue
-# endregion
-# region Variables
-Normal_Ticket_Price = randint(10,15)
-Sale_Ticket_Price = randint(2,5)
-Your_Money = randint(35,80)
-Penguin_Plush_Count = randint(1,3)
-Tiger_Plush_Count = randint(1,4)
-Koala_Plush_Count = randint(1,2)
-Giraffe_Plush_Count = randint(1,2)
-Elephant_Plush_Count = randint(1,2)
-Monkey_Plush_Count = randint(2,4)
-Safari_Apparel_Count = randint(2,3)
-Giraffe_Apparel_Count = randint(2,3)
-Tiger_Apparel_Count = randint(2,3)
-Zoo_Guide_Book_Count = randint(4,6)
-Keychain_Count = randint(13,18)
-Postcard_Count = randint (8,12)
-Zoo_Guide_Book_Count = randint(7,10)
-Help_desk_attendent_lines = ["No, you cannot pet the geese.", "No, we don't rent out the capybaras for birthday parties.",
- "No, the monkeys didn't steal your keys, but check your pockets anyway.", "If a bird poops on you, it's technically good luck.",
-  "If you drop your phone in the alligator exhibit, it belongs to the alligator now.","The hyenas aren't laughing at you. Well, they might be, but it's nothing personal.",
-  "The Hippo Cam is down because a hippo sat on it. We are working on a solution.","I heard that there is a secret command called 'Jump' at the fountain...","I miss mae...if only I could see her again...Anyways, what's up?"]
-GATE1_PASS = False
-GATE2_PASS = False
-Inventory = []
-Sale = False
-Total_Cost = 00.00
-StealAttempt = Stole = False
-secretsteal = secretjump = secretriver = False
-A1 = A2 = A3 = A4 = A5 = A6 = A7 = A8 = A9 = A10 = A11 = A12 = A13 = A14 = A15 = A16 = A17 = A18 = A19 = A20 = A21 = A22 = A23 = A24 = A25 = A26 = A27 = A28 = A29 = A30 = A31 = False
-SeenAnimals = 0
-SeenAnimalCondition = [A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8 , A9 , A10 , A11 , A12 , A13 , A14 , A15 , A16 , A17 , A18 , A19 , A20 , A21 , A22 , A23 , A24 , A25 , A26 , A27 , A28 , A29 , A30 , A31]
-secrets_found = 0
 # endregion
 # region Graphics
 WIP = r"""
@@ -5733,18 +5732,13 @@ would you like to checkout? (y/n):
             continue
 def tickets(): # done
     Clear()
-    global secrets_found
+    global secrets_found, SeenAnimals
     print(ZOO_ENTRANCE)
     time.sleep(1)
     print('You already paid for your ticket...')
     time.sleep(1)
     Go_Home = input('Would you like to go home? (y/n): ').lower()
     if Go_Home == 'y':
-        for seen in SeenAnimalCondition:
-            if seen == True:
-                SeenAnimals += 1
-            else:
-                pass
         if secretsteal == True:
             secrets_found += 1
         if secretriver == True:
@@ -5774,6 +5768,11 @@ def tickets(): # done
         else:
             pass
         time.sleep(2)
+        for i in SeenAnimalCondition:
+            if i == True:
+                SeenAnimals += 1
+            else:
+                pass
         print(f"You saw {SeenAnimals}/31 animals!")
         time.sleep(1)
         print(f"You found {secrets_found}/3 secrets!")
@@ -6388,7 +6387,7 @@ while True:
         print('Travelling to Cafe')
         time.sleep(1)
         cafe()
-    elif Answer == 'i':
+    elif Answer in ['i','inventory']:
         search_inventory()
     elif Answer in ['help desk','help']:
         print('Travelling to Help Desk')

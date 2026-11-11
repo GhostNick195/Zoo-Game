@@ -34,6 +34,7 @@ secretsteal = secretjump = secretriver = False
 SeenAnimalCondition = [False] * 31
 secrets_found = 0
 SeenAnimals = 0
+went_to_help_desk = False
 # endregion
 # region Classes
 def Clear():
@@ -5773,6 +5774,11 @@ def tickets(): # done
                 SeenAnimals += 1
             else:
                 pass
+        if went_to_help_desk == False:
+            print('You know, I put effort into making the help desk too... :(')
+            time.sleep(0.75)
+        else:
+            pass
         print(f"You saw {SeenAnimals}/31 animals!")
         time.sleep(1)
         print(f"You found {secrets_found}/3 secrets!")
@@ -5927,6 +5933,8 @@ would you like to checkout? (y/n):
             print('something went wrong')
             continue
 def help_desk(): # done
+    global went_to_help_desk
+    went_to_help_desk = True
     while True:
         Clear()
         print(HELP_DESK.format(Help_desk_text=Help_desk_attendent_lines[randint(0,7)]))
@@ -6222,7 +6230,7 @@ def reptile_house(): # done
             time.sleep(0.5)
             see_jerboa()
             continue
-        elif travel_to in ['crocodile','indian crocodile','gharial crocodile','gharial','indian gharial crocodile','croc']:
+        elif travel_to in ['crocodile','indian crocodile','gharial crocodile','gharial','indian gharial crocodile','croc','the indian gharial crocodile']:
             time.sleep(0.5)
             see_indian_gharial()
             continue

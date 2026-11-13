@@ -3,8 +3,25 @@ import os
 import time
 from random import randint
 from sys import exit
+import logging
+from pathlib import Path
+scriptpath = Path(__file__).resolve().parent
+logging.basicConfig(
+    filename=scriptpath / "ZooGameLogs.txt",
+    filemode="w",
+    level=logging.DEBUG,
+    format=" %(asctime)s -  %(levelname)s -  %(message)s",
+    force=True
+)
+logger = logging.getLogger(__name__)
+try:
+    import questionary # try and except for the only third party module
+except Exception as error:
+    logger.critical(f"{error}. User missing dependencies.")
+    print("Use 'pip install questionary' to install missing module.")
+    exit()
 # region Variables
-Normal_Ticket_Price = randint(10,15)
+Normal_Ticket_Price = randint(10,15) # randomised variables for part of gameplay
 Sale_Ticket_Price = randint(2,5)
 Your_Money = randint(35,80)
 Penguin_Plush_Count = randint(1,3)
@@ -24,22 +41,22 @@ Help_desk_attendent_lines = ["No, you cannot pet the geese.", "No, we don't rent
  "No, the monkeys didn't steal your keys, but check your pockets anyway.", "If a bird poops on you, it's technically good luck.",
   "If you drop your phone in the alligator exhibit, it belongs to the alligator now.","The hyenas aren't laughing at you. Well, they might be, but it's nothing personal.",
   "The Hippo Cam is down because a hippo sat on it. We are working on a solution.","I heard that there is a secret command called 'Jump' at the fountain...","I miss mae...if only I could see her again...Anyways, what's up?"]
-GATE1_PASS = False
+GATE1_PASS = False # for detecting if player has been to the gates
 GATE2_PASS = False
 Inventory = []
-Sale = False
+Sale = False # lets script know to put ticket price on sale
 Total_Cost = 00.00
-StealAttempt = Stole = False
-secretsteal = secretjump = secretriver = False
-SeenAnimalCondition = [False] * 31
-secrets_found = 0
-SeenAnimals = 0
-went_to_help_desk = False
+StealAttempt = Stole = False # tracking if player attempted theft
+secretsteal = secretjump = secretriver = False # tracking if player found secrets
+SeenAnimalCondition = [False] * 31 #tracks which animals the player has seen
+secrets_found = 0 # tracking found secrets
+SeenAnimals = 0 # tracking viewed aniamals
+went_to_help_desk = False # for detecting if player went to help desk at end of game
 # endregion
-# region Classes
+# region Classes 
 def Clear():
     os.system('cls' if os.name == 'nt' else 'clear')
-class Savanna_Animal:
+class Savanna_Animal: # class for animals in the savanna 
     def __init__(self, name, age, description,endangered_status):
         self.name = name
         self.age = age
@@ -70,40 +87,38 @@ def see_rhino():
         Clear()
         print(RHINO)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the Rhino...')
             time.sleep(0.5)
             print('It stares...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Black_Rhinoceroes.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Black_Rhinoceroes.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Black_Rhinoceroes.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Black_Rhinoceroes.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Ocelot = Savanna_Animal("Copan", 5, 
 r"""Scientific Name:
@@ -127,40 +142,38 @@ def see_ocelot():
         Clear()
         print(OCELOT)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the ocelot...')
             time.sleep(0.5)
             print('The ocelot admires you back...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Ocelot.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Ocelot.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Ocelot.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Ocelot.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Painted_Wolf = Savanna_Animal("Splotch", 4, r"""
 Scientific Name:
@@ -183,40 +196,38 @@ def see_wolf():
         Clear()
         print(PAINTED_WOLF)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the Wolf...')
             time.sleep(0.5)
             print('It looks back with a silly look...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Painted_Wolf.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Painted_Wolf.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Painted_Wolf.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Painted_Wolf.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Pangolin = Savanna_Animal("Kaiju", 15, 
 r"""Scientific Name
@@ -243,43 +254,41 @@ def see_pangolin():
         Clear()
         print(PANGOLIN)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the pangolin...')
             time.sleep(0.5)
             print('The pangolin rolls into a ball as if it is scared of you...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Pangolin.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"he is {Pangolin.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Pangolin.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Pangolin.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 
-class Forest_Animal:
+class Forest_Animal: # class for animals in the forest
     def __init__(self, name, age, description,endangered_status):
         self.name = name
         self.age = age
@@ -310,40 +319,38 @@ def see_lynx():
         Clear()
         print(LYNX)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the lynx...')
             time.sleep(0.5)
             print('The lynx quietly hisses...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Lynx.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Lynx.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Lynx.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Lynx.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Capybara = Forest_Animal("Andie", 2, 
 r"""
@@ -366,40 +373,38 @@ def see_capybara():
         Clear()
         print(CAPYBARA)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the capybara...')
             time.sleep(0.5)
             print('The capybara is just straight chillin...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Capybara.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Capybara.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Capybara.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Capybara.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Silverback_Gorilla = Forest_Animal("Harambe", 11,
 r"""
@@ -420,40 +425,38 @@ def see_gorilla():
         Clear()
         print(SILVERBACK_GORILLA)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the silverback...')
             time.sleep(0.5)
             print('The gorilla looks off into the distance...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Silverback_Gorilla.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Silverback_Gorilla.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Silverback_Gorilla.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Silverback_Gorilla.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Wolverine = Forest_Animal("Rogue", 4,
 r"""
@@ -476,40 +479,38 @@ def see_wolverine():
         Clear()
         print(WOLVERINE)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the wolverine...')
             time.sleep(0.5)
             print("The wolverine looks at you and it feels as if it wants to say 'Im not from marvel'...")
             time.sleep(2)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Wolverine.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Wolverine.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Wolverine.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Wolverine.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Jaguar = Forest_Animal("Ozzy", 7, 
 r"""
@@ -532,43 +533,41 @@ def see_jaguar():
         Clear()
         print(JAGUAR)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the jaguar...')
             time.sleep(0.5)
             print('The jaguar dances...?')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Jaguar.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Jaguar.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Jaguar.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Jaguar.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 
-class Reptile_House_Animal:
+class Reptile_House_Animal: # class for animals in the reptile house
     def __init__(self, name, age, description,endangered_status):
         self.name = name
         self.age = age
@@ -596,40 +595,38 @@ def see_indian_gharial():
         Clear()
         print(INDIAN_GHARIAL)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the crocodile...')
             time.sleep(0.5)
             print('The crocodile glares back with an intense feeling...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Indian_Gharial.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Indian_Gharial.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Indian_Gharial.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Indian_Gharial.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Axolotl = Reptile_House_Animal("Pip", 4, # female
 r"""
@@ -652,40 +649,38 @@ def see_axolotl():
         Clear()
         print(AXOLOTL)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the axolotl...')
             time.sleep(0.5)
             print('The axolotl looks excited to see you...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Axolotl.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Axolotl.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Axolotl.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Axolotl.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Jerboa = Reptile_House_Animal("Bounce", 1, # male
 r"""
@@ -708,40 +703,38 @@ def see_jerboa():
         Clear()
         print(JERBOA)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the jeroboa...')
             time.sleep(0.5)
             print('The jerboa hops up and down...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Jerboa.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Jerboa.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Jerboa.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Jerboa.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Crested_Newt = Reptile_House_Animal("Finley", 5, # male
 r"""
@@ -764,40 +757,38 @@ def see_newt():
         Clear()
         print(CRESTED_NEWT)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the crested newt...')
             time.sleep(0.5)
             print('The newt shows off his crest...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Crested_Newt.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Crested_Newt.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Crested_Newt.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Crested_Newt.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Amazon_Mata_Mata = Reptile_House_Animal("Moss", 14, #female
 r"""
@@ -821,40 +812,38 @@ def see_mata():
         Clear()
         print(MATA_MATA)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the mata mata...')
             time.sleep(0.5)
             print('The mata mata snaps at you...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Amazon_Mata_Mata.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Amazon_Mata_Mata.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Amazon_Mata_Mata.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Amazon_Mata_Mata.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Worm_lizard = Reptile_House_Animal("Monty", 3, #Male
 r"""
@@ -877,40 +866,38 @@ def see_worm_lizard():
         Clear()
         print(WORM_LIZARD)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the worm lizard...')
             time.sleep(0.5)
             print('The worm lizard slithers around...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Worm_lizard.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Worm_lizard.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Worm_lizard.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Worm_lizard.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Arabian_Sand_Boa = Reptile_House_Animal("Sandy", 7, # female
 r"""
@@ -933,40 +920,38 @@ def see_sand_boa():
         Clear()
         print(SAND_BOA)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the sand boa...')
             time.sleep(0.5)
             print('The sand boa looks back...but you can not tell which eye you should look into...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Arabian_Sand_Boa.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Arabian_Sand_Boa.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Arabian_Sand_Boa.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Arabian_Sand_Boa.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Burmese_Python = Reptile_House_Animal("Julius", 11, #male
 r"""
@@ -990,40 +975,38 @@ def see_python():
         Clear()
         print(BURMESE_PYTHON)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the python...')
             time.sleep(0.5)
             print('The python has a murderous intent in his eyes...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Burmese_Python.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Burmese_Python.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Burmese_Python.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Burmese_Python.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Mountain_Chicken = Reptile_House_Animal("Nugget", 6, #female
 r"""
@@ -1046,40 +1029,38 @@ def see_mountain_chicken():
         Clear()
         print(MOUNTAIN_CHICKEN)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the frog...')
             time.sleep(0.5)
             print('The frog thinks you look like a chicken...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Mountain_Chicken.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Mountain_Chicken.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Mountain_Chicken.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Axolotl.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Jackson_Chameleon = Reptile_House_Animal("Bowie", 2, #male
 r"""
@@ -1102,40 +1083,38 @@ def see_chameleon():
         Clear()
         print(CHAMELEON)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the chameleon...')
             time.sleep(0.5)
             print('The chameleon taps his horns on the glass...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Jackson_Chameleon.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Jackson_Chameleon.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Jackson_Chameleon.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Jackson_Chameleon.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Snake_Necked_Turtle = Reptile_House_Animal("Noodles", 28, #female
 r"""
@@ -1158,43 +1137,41 @@ def see_snake_turtle():
         Clear()
         print(SNAKE_NECKED_TURTLE)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the turtle...')
             time.sleep(0.5)
             print('The turtle wiggles her head around...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Snake_Necked_Turtle.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Snake_Necked_Turtle.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Snake_Necked_Turtle.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Snake_Necked_Turtle.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 
-class Aquarium_Animal:
+class Aquarium_Animal: # class for animals in the aquarium
     def __init__(self, name, age, description,endangered_status):
         self.name = name
         self.age = age
@@ -1220,40 +1197,38 @@ def see_manta_ray():
         Clear()
         print(MANTA_RAY)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the manta...')
             time.sleep(0.5)
             print('He majestically swims around...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Manta_Ray.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Manta_Ray.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Manta_Ray.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Manta_Ray.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Lamprey = Aquarium_Animal("Penelope", 4, # female
 r"""
@@ -1276,40 +1251,38 @@ def see_lamprey():
         Clear()
         print(LAMPREY)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the lamprey...')
             time.sleep(0.5)
             print('She flashes her teeth at you...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Lamprey.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Lamprey.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Lamprey.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Lamprey.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Bichir = Aquarium_Animal("Gunther", 11, # male
 r"""
@@ -1331,40 +1304,38 @@ def see_bichir():
         Clear()
         print(BICHIR)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the birchir...')
             time.sleep(0.5)
             print('He swims behind some rocks...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Bichir.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Bichir.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Bichir.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Bichir.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Pelican_Eel = Aquarium_Animal("Zephyr", 7, # No gender
 r"""
@@ -1386,40 +1357,38 @@ def see_pelican_eel():
         Clear()
         print(PELICAN_EEL)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the eel...')
             time.sleep(0.5)
             print('It looks ready to swallow you whole...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"It's name is {Pelican_Eel.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"It is {Pelican_Eel.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Pelican_Eel.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Pelican_Eel.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Blue_Dragon = Aquarium_Animal("Cleo", 6, # Hermaphrodite
 r"""
@@ -1442,40 +1411,38 @@ def see_blue_dragon():
         Clear()
         print(BLUE_DRAGON)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the blue dragon...')
             time.sleep(0.5)
             print("It slightly wiggles...")
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"It's name is {Blue_Dragon.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"It is {Blue_Dragon.age} months old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Blue_Dragon.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Blue_Dragon.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Sunfish = Aquarium_Animal("Wally", 19, # male
 r"""
@@ -1497,40 +1464,38 @@ def see_sunfish():
         Clear()
         print(SUNFISH)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the sunfish...')
             time.sleep(0.5)
             print('He swims into the glass...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Sunfish.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Sunfish.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Sunfish.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Sunfish.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Giant_Isopod = Aquarium_Animal("Bertha", 32, # female
 r"""
@@ -1551,43 +1516,41 @@ def see_giant_isopod():
         Clear()
         print(GIANT_ISOPOD)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the isopod...')
             time.sleep(0.5)
             print('She wiggles her claws...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Giant_Isopod.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Giant_Isopod.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Giant_Isopod.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Giant_Isopod.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 
-class Bird_House_Animal:
+class Bird_House_Animal: # class for animals in the bird house
     def __init__(self, name, age, description,endangered_status):
         self.name = name
         self.age = age
@@ -1615,40 +1578,38 @@ def see_shoebill():
         Clear()
         print(SHOEBILL)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the shoebill...')
             time.sleep(0.5)
             print('Your soul has been tainted...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Shoebill.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Shoebill.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Shoebill.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Shoebill.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Pukeko = Bird_House_Animal("Evie",3, # femle
 r"""
@@ -1672,40 +1633,38 @@ def see_pukeko():
         Clear()
         print(PUKEKO)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the pukeko...')
             time.sleep(0.5)
             print('It looks dumb...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"Her name is {Pukeko.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"She is {Pukeko.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Pukeko.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Pukeko.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Potoo = Bird_House_Animal("Echo",4, # male
 r"""
@@ -1728,40 +1687,38 @@ def see_potoo():
         Clear()
         print(POTOO)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the potoo...')
             time.sleep(0.5)
             print('His pupils widen...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Potoo.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Potoo.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Potoo.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Potoo.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 Macaw = Bird_House_Animal("Jasper",14, #male
 r"""
@@ -1784,43 +1741,41 @@ def see_macaw():
         Clear()
         print(MACAW)
         time.sleep(0.2)
-        Action = input('What would you like to do?: (admire/get info/leave): ').lower()
-        if Action == 'admire':
+        Action = questionary.select('What would you like to do?: ',choices=['Admire','Get Info','Leave']).ask()
+        if Action == 'Admire':
             print('You admire the macaw...')
             time.sleep(0.5)
             print('He says he wants a cracker...')
             time.sleep(1.75)
             continue
-        elif Action in ['info','get info','get']:
-            get_info = input('What do you want to know? (name/age/description/status): ')
-            if get_info == 'name':
+        elif Action == 'Get Info':
+            get_info = questionary.select('What do you want to know?: ',choices=['Name','Age','Description','Status']).ask()
+            if get_info == 'Name':
                 print(f"His name is {Macaw.name}.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'age':
+            elif get_info == 'Age':
                 print(f"He is {Macaw.age} years old.")
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info == 'description':
+            elif get_info == 'Description':
                 print(Macaw.description)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
-            elif get_info in ['status','endangered status','endangered']:
+            elif get_info == 'Status':
                 print(Macaw.status)
-                Proceed = input('Proceed?: ')
+                questionary.press_any_key_to_continue().ask()
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.5)
+                logger.debug('Unrecognised input')
                 continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 # endregion
-# region Graphics
+# region Graphics, THESE ARE ALL GRAPHICS, THERE IS NO COMMENTS IN THIS SECTION! SKIP TO LNES 4723 TO CONTINUE
 WIP = r"""
                               ..
                            -@@@@@@@@@@@#-.
@@ -4765,341 +4720,322 @@ o##ooooooo#oo########@@@@###@@@@@@#####@@##########o####oooo###ooo#o#oooo#######
                                                       ......
 """
 # endregion
-# region Graphic Functions
-def penguin_plush():
+# region Graphic Functions, all of these functions use the graphics to display a visual for the item, alongside an interaction option menu
+def penguin_plush(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(PENGUIN_PLUSH)
         time.sleep(0.5)
-        Action = input('What would you like to do? (squish/leave): ').lower()
-        if Action == 'squish':
+        Action = questionary.select('What would you like to do? (squish/leave): ',choices=['Squish','Leave']).ask()
+        if Action == 'Squish':
             print('You squeezed the plush.')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def koala_plush():
+def koala_plush():# uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(KOALA_PLUSH)
         time.sleep(0.5)
-        Action = input('What would you like to do? (squish/leave): ').lower()
-        if Action == 'squish':
+        Action = questionary.select('What would you like to do? (squish/leave): ',choices=['Squish','Leave']).ask()
+        if Action == 'Squish':
             print('You squeezed the plush.')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue        
-def tiger_plush():
+def tiger_plush(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(TIGER_PLUSH)
         time.sleep(0.5)
-        Action = input('What would you like to do? (squish/leave): ').lower()
-        if Action == 'squish':
+        Action = questionary.select('What would you like to do? (squish/leave): ',choices=['Squish','Leave']).ask()
+        if Action == 'Squish':
             print('You squeezed the plush.')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def giraffe_plush():
+def giraffe_plush(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(GIRAFFE_PLUSH)
         time.sleep(0.5)
-        Action = input('What would you like to do? (squish/leave): ').lower()
-        if Action == 'squish':
+        Action = questionary.select('What would you like to do? (squish/leave): ',choices=['Squish','Leave']).ask()
+        if Action == 'Squish':
             print('You squeezed the plush.')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def monkey_plush():
+def monkey_plush(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(MONKEY_PLUSH)
         time.sleep(0.5)
-        Action = input('What would you like to do? (squish/leave): ').lower()
-        if Action == 'squish':
+        Action = questionary.select('What would you like to do? (squish/leave): ',choices=['Squish','Leave']).ask()
+        if Action == 'Squish':
             print('You squeezed the plush.')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def elephant_plush():
+def elephant_plush(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(ELEPHANT_PLUSH)
         time.sleep(0.5)
-        Action = input('What would you like to do? (squish/leave): ').lower()
-        if Action == 'squish':
+        Action = questionary.select('What would you like to do? (squish/leave): ',choices=['Squish','Leave']).ask()
+        if Action == 'Squish':
             print('You squeezed the plush.')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def keychain():
+def keychain(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(KEYCHAIN)
         time.sleep(0.5)
-        Action = input('What would you like to do? (inspect/leave): ')
-        if Action == 'inspect':
+        Action = questionary.select('What would you like to do? (inspect/leave): ',choices=['Inspect','Leave']).ask()
+        if Action == 'Inspect':
             print('The keychain shines.')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def postcard():
+def postcard(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(POSTCARD)
         time.sleep(0.5)
-        Action = input('What would you like to do? (inspect/leave): ')
-        if Action == 'inspect':
+        Action = questionary.select('What would you like to do? (inspect/leave): ',choices=['Inspect','Leave']).ask()
+        if Action == 'Inspect':
             print('The postcard looks bland.')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def tiger_shirt():
+def tiger_shirt(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(TIGER_SHIRT)
         time.sleep(0.5)
-        Action = input('What would you like to do? (inspect/leave): ')
-        if Action == 'inspect':
+        Action = questionary.select('What would you like to do? (inspect/leave): ',choices=['Inspect','Leave']).ask()
+        if Action == 'Inspect':
             print('The shirt looks okay...')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def safari_shirt():
+def safari_shirt(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(SAFARI_SHIRT)
         time.sleep(0.5)
-        Action = input('What would you like to do? (inspect/leave): ')
-        if Action == 'inspect':
+        Action = questionary.select('What would you like to do? (inspect/leave): ',choices=['Inspect','Leave']).ask()
+        if Action == 'Inspect':
             print('The shirt looks okay...')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def giraffe_shirt():
+def giraffe_shirt(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         Clear()
         print(GIRAFFE_SHIRT)
         time.sleep(0.5)
-        Action = input('What would you like to do? (inspect/leave): ')
-        if Action == 'inspect':
+        Action = questionary.select('What would you like to do? (inspect/leave): ',choices=['Inspect','Leave']).ask()
+        if Action == 'Inspect':
             print('The shirt looks okay...')
             time.sleep(1)
             continue
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def espresso():
+def espresso(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         global Inventory
         Clear()
         print(ESPRESSO)
         time.sleep(0.5)
-        Action = input('What would you like to do? (drink/leave): ').lower()
-        if Action == 'drink':
+        Action = questionary.select('What would you like to do? (drink/leave): ',choices=['Drink','Leave']).ask()
+        if Action == 'Drink':
             print('You drank the espresso.')
             Inventory.remove('Silverback Espresso')
             time.sleep(1)
             break
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def americano():
+def americano(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         global Inventory
         Clear()
         print(AMERICANO)
         time.sleep(0.5)
-        Action = input('What would you like to do? (drink/leave): ').lower()
-        if Action == 'drink':
+        Action = questionary.select('What would you like to do? (drink/leave): ',choices=['Drink','Leave']).ask()
+        if Action == 'Drink':
             print('You drank the americano.')
             Inventory.remove('Anaconda Americano')
             time.sleep(1)
             break
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def latte():
+def latte(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         global Inventory
         Clear()
         print(LATTE)
         time.sleep(0.5)
-        Action = input('What would you like to do? (drink/leave): ').lower()
-        if Action == 'drink':
+        Action = questionary.select('What would you like to do? (drink/leave): ',choices=['Drink','Leave']).ask()
+        if Action == 'Drink':
             print('You drank the latte.')
             Inventory.remove('Pink Flamingo Latte')
             time.sleep(1)
             break
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def tea():
+def tea(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         global Inventory
         Clear()
         print(TEA)
         time.sleep(0.5)
-        Action = input('What would you like to do? (drink/leave): ').lower()
-        if Action == 'drink':
+        Action = questionary.select('What would you like to do? (drink/leave): ',choices=['Drink','Leave']).ask()
+        if Action == 'Drink':
             print('You drank the tea.')
             Inventory.remove('Toucan Tropical Tea')
             time.sleep(1)
             break
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def doughnut():
+def doughnut(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         global Inventory
         Clear()
         print(DOUGHNUT)
         time.sleep(0.5)
-        Action = input('What would you like to do? (eat/leave): ').lower()
-        if Action == 'eat':
+        Action = questionary.select('What would you like to do? (eat/leave): ',choices=['Eat','Leave']).ask()
+        if Action == 'Eat':
             print('You ate the doughnut.')
             Inventory.remove('Dugong Doughnut')
             time.sleep(1)
             break
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def scone():
+def scone(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         global Inventory
         Clear()
         print(SCONE)
         time.sleep(0.5)
-        Action = input('What would you like to do? (eat/leave): ').lower()
-        if Action == 'eat':
+        Action = questionary.select('What would you like to do? (eat/leave): ',choices=['Eat','Leave']).ask()
+        if Action == 'Eat':
             print('You ate the scone.')
             Inventory.remove('Sun Bear Scone')
             time.sleep(1)
             break
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def bun():
+def bun(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         global Inventory
         Clear()
         print(BUN)
         time.sleep(0.5)
-        Action = input('What would you like to do? (eat/leave): ').lower()
-        if Action == 'eat':
+        Action = questionary.select('What would you like to do? (eat/leave): ',choices=['Eat','Leave']).ask()
+        if Action == 'Eat':
             print('You ate the bun.')
             Inventory.remove('Oreo Panda Bun')
             time.sleep(1)
             break
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
-def pastry():
+def pastry(): # uses the graphics to display a visual for the item, alongside an interaction option menu
     while True:
         global Inventory
         Clear()
         print(PASTRY)
         time.sleep(0.5)
-        Action = input('What would you like to do? (eat/leave): ').lower()
-        if Action == 'eat':
+        Action = questionary.select('What would you like to do? (eat/leave): ',choices=['Eat','Leave']).ask()
+        if Action == 'Eat':
             print('You ate the pastry.')
             Inventory.remove('Lion Claw Pastry')
             time.sleep(1)
             break
-        elif Action == 'leave':
+        elif Action == 'Leave':
             break
         else:
-            print('Something went wrong')
-            time.sleep(0.5)
+            logger.debug('Unrecognised input')
             continue
 # endregion
 # region Main Area Functions
-def search_inventory(): 
+def search_inventory():  # function for when player searches to inventory
     while True:
         Clear()
-        if len(Inventory) != 0:
+        if len(Inventory) != 0: # detects if inventory is empty
             print(Inventory)
-            return_to_zoo = input('Would you like search or exit inventory?: ')
-            if return_to_zoo in ['exit','leave']:
+            return_to_zoo = questionary.select('Would you like to search or exit inventory?: ',choices=['Search','Exit']).ask() # select menu to search or exit inventory
+            if return_to_zoo == 'Exit':
                 break
-            elif return_to_zoo == 'search':
-                inspect_item = input('What item would you like to inspect? (type exactly): ')
+            elif return_to_zoo == 'Search':
+                inspect_item = questionary.select('What item would you like to inspect?: ',choices=Inventory).ask() # select menu for items in inventory
                 if inspect_item in Inventory:
-                    if inspect_item == 'Penguin Plush':
+                    if inspect_item == 'Penguin Plush': # inspect function for each item in the inventory
                         penguin_plush()
                         continue
                     elif inspect_item == 'Koala Plush':
@@ -5175,11 +5111,11 @@ def search_inventory():
                         bun()
                         continue
                     else:
-                        print('Something went wrong')
-                        time.sleep(0.5)
+                        logger.debug('Unrecognised input')
                         continue
                 else:
                     print(f"{inspect_item} is not in inventory")
+                    logger.debug('Player attempted to inspect real item not in inventory')
                     time.sleep(1)
                     continue
             else:
@@ -5188,16 +5124,16 @@ def search_inventory():
             print('Your inventory is empty...')
             time.sleep(1)
             break
-def gift_shop(): # done
+def gift_shop(): # function for when player travels to giftshop
     global Monkey_Plush_Count, Elephant_Plush_Count, Penguin_Plush_Count, Tiger_Plush_Count, Koala_Plush_Count, Giraffe_Plush_Count, Keychain_Count, Postcard_Count, Your_Money, Total_Cost, Inventory, StealAttempt, Stole, secretsteal
     Cart = []
     while True:
         Clear()
         print(GIFT_SHOP.format(cost=f"{Total_Cost:05.2f}",money=f"{Your_Money:05.2f}"))
-        Actions = input('What would you like to do? (add (to cart), view (cart), buy, leave): ').lower()
-        if Actions in ['add', 'add to cart', 'add cart', 'addcart']:
-            AddCartItem = input('Would you like to add? (plush, keychain, postcard, apparel): ').lower()
-            if AddCartItem in ['plush']:
+        Actions = questionary.autocomplete('What would you like to do?: (add/view/buy/leave) ',choices=['Add','View','Buy','Leave']).ask() # select menu for adding to cart, view cart, buying, and leaving giftshop. Aswell as the secret option steal that is not included in autocomplete
+        if Actions == 'Add':
+            AddCartItem = questionary.select('Would you like to add?: ',choices=['Plush','Keychain','Postcard','Apparel']).ask()
+            if AddCartItem == 'Plush': #adding plushes to cart
                 print(rf"""There is 
 {Penguin_Plush_Count} Penguin Plushies $6.95
 {Tiger_Plush_Count} Tiger Plushies $10.38
@@ -5206,8 +5142,8 @@ def gift_shop(): # done
 {Giraffe_Plush_Count} Giraffe Plushies $8.59
 {Monkey_Plush_Count} Monkey Plushies $9.99
 in stock.""")
-                AddPlushToCart = input('Please input plush name: ').lower()
-                if AddPlushToCart in ['penguin', 'penguinplush', 'penguin plush']:
+                AddPlushToCart = questionary.select('Please select plush name: ',choices=['Monkey Plush','Tiger Plush','Elephant Plush','Koala Plush','Penguin Plush','Giraffe Plush']).ask()
+                if AddPlushToCart == 'Penguin Plush':
                     if Penguin_Plush_Count != 0:
                         Cart.append('Penguin Plush')
                         Total_Cost += 6.95
@@ -5219,7 +5155,7 @@ in stock.""")
                         print('There is no more Penguin Plushes in stock.')
                         time.sleep(1)
                         continue
-                elif AddPlushToCart in ['tiger', 'tiger plush', 'tigerplush']:
+                elif AddPlushToCart == 'Tiger Plush':
                     if Tiger_Plush_Count != 0:
                         Cart.append('Tiger Plush')
                         Total_Cost += 10.38
@@ -5231,7 +5167,7 @@ in stock.""")
                         print("There is no more Tiger Plushes in stock.")
                         time.sleep(1)
                         continue
-                elif AddPlushToCart in ['elephant', 'elephantplush', 'elephant plush']:
+                elif AddPlushToCart == 'Elephant Plush':
                     if Elephant_Plush_Count != 0:
                         Cart.append('Elephant Plush')
                         Total_Cost += 9.56
@@ -5243,7 +5179,7 @@ in stock.""")
                         print('There is no more Elephant Plushes in stock.')
                         time.sleep(1)
                         continue
-                elif AddPlushToCart in ['koala', 'koala plush', 'koalaplush']:
+                elif AddPlushToCart == 'Koala Plush':
                     if Koala_Plush_Count != 0:
                         Cart.append('Koala Plush')
                         Total_Cost += 8.76
@@ -5255,7 +5191,7 @@ in stock.""")
                         print('There is no more Koala Plushes in stock.')
                         time.sleep(1)
                         continue
-                elif AddPlushToCart in ['giraffe', 'giraffeplush', 'giraffe plush']:
+                elif AddPlushToCart == 'Giraffe Plush':
                     if Giraffe_Plush_Count != 0:
                         Cart.append('Giraffe Plush')
                         Total_Cost += 8.59
@@ -5267,7 +5203,7 @@ in stock.""")
                         print('There is no more Giraffe Plushes in stock.')
                         time.sleep(1)
                         continue
-                elif AddPlushToCart in ['monkey', 'monkeyplush', 'monkey plush']:
+                elif AddPlushToCart == 'Monkey Plush':
                     if Monkey_Plush_Count != 0:
                         Cart.append('Monkey Plush')
                         Total_Cost += 9.99
@@ -5283,63 +5219,62 @@ in stock.""")
                     print('Returning...')
                     time.sleep(1)
                     continue           
-            elif AddCartItem in ['keychain', 'key chain']:
+            elif AddCartItem == 'Keychain': # adding keychains to cart
                 print(f"There is {Keychain_Count} Python Zoo Keychain(s) for $2.46 in stock...")
-                AddKeyChainToCart = input('Would you like to add a Python Zoo Keychain to the cart? (y/n): ').lower()
-                if AddKeyChainToCart == 'y':
+                AddKeyChainToCart = questionary.select('Would you like to add a Python Zoo Keychain to the cart?: ',choices=['Yes','No']).ask()
+                if AddKeyChainToCart == 'Yes':
                     Cart.append('Python Zoo Keychain')
                     Total_Cost += 2.46
                     Keychain_Count -= 1
                     print(f"Added Python Zoo Keychain to cart. There is {Keychain_Count} Keychain(s) left.")
                     time.sleep(0.75)
                     continue
-                elif AddKeyChainToCart == 'n':
+                elif AddKeyChainToCart == 'No':
                     print('Returning...')
                     time.sleep(1)
                     continue
                 else:
-                    print('Something went wrong')
-                    time.sleep(1)
+                    logger.debug('Unrecognised input')
                     continue
-            elif AddCartItem in ['postcard', 'post', 'card', 'post card']:
+            elif AddCartItem == 'Postcard': # adding keychains to cart
                 print(f'There is {Postcard_Count} Python Zoo Postcard(s) for $1.50 in stock...')
-                AddPostcardToCart = input('Would you like to add a Python Zoo Postcard to the cart? (y/n): ').lower()
-                if AddPostcardToCart == 'y':
+                AddPostcardToCart = questionary.select('Would you like to add a Python Zoo Postcard to the cart?: ',choices=['Yes','No']).ask()
+                if AddPostcardToCart == 'Yes':
                     Cart.append('Python Zoo Postcard')
                     Total_Cost += 1.50
                     Postcard_Count -= 1
                     print(f"Added Python Zoo Postcard to cart. There is {Postcard_Count} Postcard(s) left.")
                     time.sleep(1)
                     continue
-                elif AddPostcardToCart == 'n':
+                elif AddPostcardToCart == 'No':
                     print('Returning...')
                     time.sleep(0.75)
                     continue
                 else:
-                    print('Something went wrong')
-                    time.sleep(0.75)
-            elif AddCartItem in ['apparel','clothes','clothing','shirt','shirts']:
+                    logger.debug('Unrecognised input')
+                    continue
+            elif AddCartItem == 'Apparel': # adding keychains to cart
                 print(f"""There is
 {Safari_Apparel_Count} Safari shirt(s)
 {Giraffe_Apparel_Count} Giraffe shirt(s)
 {Tiger_Apparel_Count} Tiger shirt(s)
 in stock...""")
-                AddApparelToCart = input('Please input Apparel name: ').lower()
-                if AddApparelToCart in ['safari','safarishirt','safari shirt','safari apparel','safariapparel']:
+                AddApparelToCart = questionary.select('Please select Apparel name: ',choices=['Safari Shirt','Giraffe Shirt','Tiger Shirt']).ask()
+                if AddApparelToCart == 'Safari Shirt':
                     Cart.append('Safari Shirt')
                     Total_Cost += 9.99
                     Safari_Apparel_Count -= 1
                     print(f"Added Safari Shirt to cart. There is {Safari_Apparel_Count} Safari Shirt(s) left.")
                     time.sleep(1)
                     continue
-                elif AddApparelToCart in ['giraffe','giraffe apparel','giraffeapparel','giraffeshirt','giraffe shirt']:
+                elif AddApparelToCart == 'Giraffe Shirt':
                     Cart.append('Giraffe Shirt')
                     Total_Cost += 9.99
                     Giraffe_Apparel_Count -= 1
                     print(f"Added Giraffe Shirt to cart. There is {Giraffe_Apparel_Count} Giraffe Shirt(s) left.")
                     time.sleep(1)
                     continue
-                elif AddApparelToCart in ['tiger','tigershirt','tiger shirt','tiger apparel', 'tigerapparel']:
+                elif AddApparelToCart == 'Tiger Shirt':
                     Cart.append('Tiger Shirt')
                     Total_Cost += 9.99
                     Tiger_Apparel_Count -= 1
@@ -5347,20 +5282,19 @@ in stock...""")
                     time.sleep(1)
                     continue
                 else:
-                    print('Something went wrong')
-                    time.sleep(0.75)
+                    logger.debug('Unrecognised input')
                     continue
             else:
-                print('Something went wrong')
-                time.sleep(1)            
+                logger.debug('Unrecognised input')
+                continue          
 
-        elif Actions in ['buy', 'purchase','checkout']:
+        elif Actions == 'Buy': # buying from cart
             if len(Cart) != 0:
-                purchase = input(f"""You have the following in your cart:
+                purchase = questionary.select(f"""You have the following in your cart:
 {Cart}
-would you like to checkout? (y/n): 
-""")            
-                if purchase == 'y':
+would you like to checkout?: 
+""",choices=['Yes','No']).ask()            
+                if purchase == 'Yes':
                     if Your_Money >= Total_Cost:
                         Inventory.extend(Cart)
                         Your_Money -= Total_Cost
@@ -5373,17 +5307,19 @@ would you like to checkout? (y/n):
                         print('You do not have enough money...')
                         time.sleep(2)
                         continue
+                else:
+                    continue
             else:
                 print('Your cart is empty...')
                 time.sleep(1)
                 continue
 
-        elif Actions in ['view', 'viewcart','view cart']:
-            if len(Cart) != 0:
+        elif Actions == 'View': # viewing the cart
+            if len(Cart) != 0: # checks if cart is empty
                 print(Cart)
-                Remove_Answer = input('Would you like to remove an item from the cart? (y/n): ').lower()
-                if Remove_Answer == 'y':
-                    Remove = input('Which item would you like to remove? (type exactly): ')
+                Remove_Answer = questionary.select('Would you like to remove an item from the cart?: ',choices=['Yes','No']).ask()
+                if Remove_Answer == 'Yes':
+                    Remove = questionary.autocomplete('Which item would you like to remove?: ',choices=['Monkey Plush', 'Elephant Plush', 'Tiger Plush', 'Giraffe plush', 'Penguin Plush', 'Koala Plush', 'Python Zoo Keychain', 'Python Zoo Postcard', 'Tiger Shirt', 'Giraffe Shirt', 'Safari Shirt']).ask()
                     if Remove in ['Monkey Plush', 'Elephant Plush', 'Tiger Plush', 'Giraffe plush', 'Penguin Plush', 'Koala Plush', 'Python Zoo Keychain', 'Python Zoo Postcard', 'Tiger Shirt', 'Giraffe Shirt', 'Safari Shirt']:
                         try: 
                             Cart.remove(Remove)
@@ -5438,36 +5374,34 @@ would you like to checkout? (y/n):
                             continue
                     else: 
                         print(f'Failed to remove {Remove}.')
+                        logger.debug('Player attempted to remove real item not in cart')
                         time.sleep(1)
-                elif Remove_Answer == 'n':
-                    print('Returning to gift shop')
-                    time.sleep(1)
+                elif Remove_Answer == 'No':
                     continue
                 else:
-                    print('Something went wrong.')
-                    time.sleep(0.75)
+                    logger.debug('Unrecognised input')
                     continue
             else:
                 print('Your cart is empty...')
                 time.sleep(1)
                 continue
 
-        elif Actions in ['leave', 'exit', 'stop']:
-            Total_Cost = 00.00
+        elif Actions == 'Leave': # leaving the gift shop
+            Total_Cost = 00.00 # sets the total cost to 0
             break
 
-        elif Actions == 'steal':
-            if secretsteal == False:
+        elif Actions in ['steal','rob','Steal','Rob']: # stealing
+            if secretsteal == False: # for the detecting secret
                 print('You Found a Secret!!')
                 secretsteal = True
             else:
                 pass
             StealAttempt = True
-            steal = input('Would you like to steal? (plush, keychain, postcard, apparel): ').lower()
-            if steal in ['plush']:
-                stealplush = input('Please input plush name: ').lower()
-                if stealplush in ['penguin', 'penguinplush', 'penguin plush']:
-                    if Penguin_Plush_Count != 0:
+            steal = questionary.select('What would you like to steal?: ',choices=['Plush','Keychain','Postcard','Apparel']).ask() # interaction menu for what you want to steal
+            if steal == 'Plush': # stealing plushes
+                stealplush = questionary.select('Please select plush name: ',choices=['Penguin Plush','Tiger Plush','Koala Plush','Monkey Plush','Elephant Plush','Giraffe Plush']).ask() # interaction menu for what plush you want to steal
+                if stealplush == 'Penguin Plush': # 
+                    if Penguin_Plush_Count != 0: # detects if there is plushes to steal, all these parts do the same thing for different items
                         print('You attempt to steal the penguin plush...')
                         time.sleep(1)
                         if randint(1,100) >= 93:
@@ -5489,8 +5423,8 @@ would you like to checkout? (y/n):
                         print('There is no more Penguin Plushes in stock.')
                         time.sleep(1)
                         continue
-                elif stealplush in ['tiger', 'tiger plush', 'tigerplush']:
-                    if Tiger_Plush_Count != 0:
+                elif stealplush == 'Tiger Plush':
+                    if Tiger_Plush_Count != 0: # detects if there is plushes to steal
                         print('You attempt to steal the tiger plush...')
                         time.sleep(1)
                         if randint(1,100) >= 93:
@@ -5512,7 +5446,7 @@ would you like to checkout? (y/n):
                         print("There is no more Tiger Plushes in stock.")
                         time.sleep(1)
                         continue
-                elif stealplush in ['elephant', 'elephantplush', 'elephant plush']:
+                elif stealplush == 'Elephant Plush':
                     if Elephant_Plush_Count != 0:
                         print('You attempt to steal the elephant plush...')
                         time.sleep(1)
@@ -5535,9 +5469,9 @@ would you like to checkout? (y/n):
                         print('There is no more Elephant Plushes in stock.')
                         time.sleep(1)
                         continue
-                elif stealplush in ['koala', 'koala plush', 'koalaplush']:
+                elif stealplush == 'Koala Plush':
                     if Koala_Plush_Count != 0:
-                        print('You attempt to steal the elephant plush...')
+                        print('You attempt to steal the koala plush...')
                         time.sleep(1)
                         if randint(1,100) >= 93:
                             Stole = True
@@ -5558,9 +5492,9 @@ would you like to checkout? (y/n):
                         print('There is no more Koala Plushes in stock.')
                         time.sleep(1)
                         continue
-                elif stealplush in ['giraffe', 'giraffeplush', 'giraffe plush']:
+                elif stealplush == 'Giraffe Plush':
                     if Giraffe_Plush_Count != 0:
-                        print('You attempt to steal the elephant plush...')
+                        print('You attempt to steal the giraffe plush...')
                         time.sleep(1)
                         if randint(1,100) >= 93:
                             Stole = True
@@ -5581,7 +5515,7 @@ would you like to checkout? (y/n):
                         print('There is no more Giraffe Plushes in stock.')
                         time.sleep(1)
                         continue
-                elif stealplush in ['monkey', 'monkeyplush', 'monkey plush']:
+                elif stealplush == 'Monkey Plush':
                     if Monkey_Plush_Count != 0:
                         print('You attempt to steal the monkey plush...')
                         time.sleep(1)
@@ -5608,9 +5542,9 @@ would you like to checkout? (y/n):
                     print('Returning...')
                     time.sleep(1)
                     continue           
-            elif steal in ['keychain', 'key chain']:
-                stealkeychain = input('Would you like to STEAL a Python Zoo Keychain? (y/n): ').lower()
-                if stealkeychain == 'y':
+            elif steal == 'Keychain': # stealing keychain
+                stealkeychain = questionary.select('Would you like to STEAL a Python Zoo Keychain?: ',choices=['Yes','No']).ask()
+                if stealkeychain == 'Yes':
                     print('You attempt to steal a keychain...')
                     time.sleep(1)
                     if randint(1,100) >= 93:
@@ -5628,17 +5562,16 @@ would you like to checkout? (y/n):
                         print('Why are you trying to steal from a zoo?')
                         time.sleep(1)
                         continue
-                elif stealkeychain == 'n':
+                elif stealkeychain == 'No':
                     print('Have some sense will ya...?')
                     time.sleep(2)
                     continue
                 else:
-                    print('Something went wrong')
-                    time.sleep(1)
+                    logger.debug('Unrecognised input')
                     continue
-            elif steal in ['postcard', 'post', 'card', 'post card']:
-                stealpostcard = input('Would you like to STEAL a Python Zoo Postcard? (y/n): ').lower()
-                if stealpostcard == 'y':
+            elif steal == 'Postcard': # stealing postcard
+                stealpostcard = questionary.select('Would you like to STEAL a Python Zoo Postcard?: ',choices=['Yes','No']).ask()
+                if stealpostcard == 'Yes':
                     print('You attempt to steal a postcard...')
                     time.sleep(1)
                     if randint(1,100) >= 93:
@@ -5656,16 +5589,16 @@ would you like to checkout? (y/n):
                         print('Why are you trying to steal from a zoo?')
                         time.sleep(2)
                         continue
-                elif stealpostcard == 'n':
+                elif stealpostcard == 'No':
                     print('Do I need to knock some sense into ya...?')
                     time.sleep(0.75)
                     continue
                 else:
-                    print('Something went wrong')
-                    time.sleep(0.75)
-            elif steal in ['apparel','clothes','clothing','shirt','shirts']:
-                stealapparel = input('Please input Apparel name: ').lower()
-                if stealapparel in ['safari','safarishirt','safari shirt','safari apparel','safariapparel']:
+                    logger.debug('Unrecognised input')
+                    continue
+            elif steal == 'Apparel': # stealing apparel
+                stealapparel = questionary.select('Please select Apparel name: ',choices=['Safari Shirt','Tiger Shirt','Giraffe Shirt','Stop']).ask()
+                if stealapparel == 'Safari Shirt':
                     print('You attempt to steal a safari shirt...')
                     time.sleep(1)
                     if randint(1,100) >= 93:
@@ -5683,8 +5616,8 @@ would you like to checkout? (y/n):
                         print('Why are you trying to steal from a zoo?')
                         time.sleep(2)
                         continue
-                elif stealapparel in ['giraffe','giraffe apparel','giraffeapparel','giraffeshirt','giraffe shirt']:
-                    print('You attempt to steal a safari shirt...')
+                elif stealapparel == 'Giraffe Shirt':
+                    print('You attempt to steal a giraffe shirt...')
                     time.sleep(1)
                     if randint(1,100) >= 93:
                         Stole = True
@@ -5701,8 +5634,8 @@ would you like to checkout? (y/n):
                         print('Why are you trying to steal from a zoo?')
                         time.sleep(2)
                         continue
-                elif stealapparel in ['tiger','tigershirt','tiger shirt','tiger apparel', 'tigerapparel']:
-                    print('You attempt to steal a safari shirt...')
+                elif stealapparel == 'Tiger Shirt':
+                    print('You attempt to steal a tiger shirt...')
                     time.sleep(1)
                     if randint(1,100) >= 93:
                         Stole = True
@@ -5720,27 +5653,26 @@ would you like to checkout? (y/n):
                         time.sleep(2)
                         continue
                 else:
-                    print('Something went wrong')
-                    time.sleep(0.75)
+                    logger.debug('Unrecognised input')
                     continue
-            elif steal in ['stop','leave','nvm','no']:
+            elif steal == 'Stop': # to stop stealing
                 break
             else:
-                print('Something went wrong')
-                time.sleep(1)     
+                logger.debug('Unrecognised input')
+                continue
         else:
-            print('something went wrong')
+            logger.debug('Unrecognised input')
             continue
-def tickets(): # done
+def tickets(): # function for when player travels to tickets
     Clear()
     global secrets_found, SeenAnimals
     print(ZOO_ENTRANCE)
     time.sleep(1)
     print('You already paid for your ticket...')
     time.sleep(1)
-    Go_Home = input('Would you like to go home? (y/n): ').lower()
-    if Go_Home == 'y':
-        if secretsteal == True:
+    Go_Home = questionary.select('Would you like to go home?: ',choices=['Yes','No']).ask() # interaction menu for ending code
+    if Go_Home == 'Yes':
+        if secretsteal == True: # counts the secrets you found
             secrets_found += 1
         if secretriver == True:
             secrets_found += 1
@@ -5748,7 +5680,7 @@ def tickets(): # done
             secrets_found += 1
         print("You decided that you've had enough zoo time for the day and went home...")
         time.sleep(1)
-        if StealAttempt and Stole == True:
+        if StealAttempt and Stole == True: # extra dialouge if you stole from gift shop
             print('As you are leaving, a cop yells at you from behind.')
             time.sleep(1.5)
             print("'SIR, STOP RIGHT THERE'")
@@ -5762,19 +5694,19 @@ def tickets(): # done
             print('He puts you in his car and takes you to the county jail...')
             time.sleep(2.5)
             print("blah blah blah, anyways, moral of the story...Don't Steal...")
-        elif StealAttempt and not Stole:
+        elif StealAttempt and not Stole: # extra dialouge if you attempted to steal
             print('You reflected on your thought of stealing from the gift shop...')
             time.sleep(1)
             print("You don't really care...")
         else:
             pass
         time.sleep(2)
-        for i in SeenAnimalCondition:
+        for i in SeenAnimalCondition: #counts the total animals you saw
             if i == True:
                 SeenAnimals += 1
             else:
                 pass
-        if went_to_help_desk == False:
+        if went_to_help_desk == False: # detects if player went to help desk
             print('You know, I put effort into making the help desk too... :(')
             time.sleep(0.75)
         else:
@@ -5784,81 +5716,85 @@ def tickets(): # done
         print(f"You found {secrets_found}/3 secrets!")
         time.sleep(2)
         exit()
-    elif Go_Home == 'n':
+    elif Go_Home == 'No':
         print('You went back inside the zoo...')
         time.sleep(1)
     else:
         print('Invalid input.')
         print('Returning to zoo')
         time.sleep(1)
-def cafe(): # done
+def cafe():  # function for when player travels to cafe, all mostly the same as giftshop but with different items
     global Total_Cost, Your_Money
     Item_Cart = []
     while True:
         Clear()
         print(CAFE.format(items=f"{len(Item_Cart):02}",cost=f"{Total_Cost:05.2f}",money=f"{Your_Money:05.2f}"))
-        Actions = input("What would you like to do? (add (to cart), view (cart), buy, leave): ")
-        if Actions in ['add', 'add to cart', 'add cart', 'addcart']:
-            AddOrderItem = input('The barista asks: What would you like to order? (type menu item): ').lower()
-            if AddOrderItem in ['anaconda americano', 'anaconda', 'anacondaamericano','americano']:
+        Actions = questionary.select("What would you like to do?: ",choices=['Add','View','Buy','Leave']).ask()
+        if Actions == 'Add':
+            AddOrderItem = questionary.select('The barista asks: What would you like to order?: ',choices=['Anaconda Americano','Silverback Espresso','Pink Flamingo Latte','Toucan Tropical Tea',
+            'Dugong Doughnut','Sun Bear Scone','Oreo Panda Bun','Lion Claw Pastry','Return']).ask()
+            if AddOrderItem == 'Anaconda Americano':
                 Item_Cart.append('Anaconda Americano')
                 Total_Cost += 4.50
                 print('Added Anaconda Americano to order!')
                 time.sleep(0.75)
                 continue
-            elif AddOrderItem in ['silverback espresso','espresso','silverbackespresso','silverback','gorilla']:
+            elif AddOrderItem == 'Silverback Espresso':
                 Item_Cart.append('Silverback Espresso')
                 Total_Cost += 4.00
                 print('Added Silverback Espresso to order!')
                 time.sleep(0.75)
                 continue
-            elif AddOrderItem in ['pink flamingo latte','flamingo','latte','pink','pink flamingo','pinkflamingo','pinkflamingolatte']:
+            elif AddOrderItem == 'Pink Flamingo Latte':
                 Item_Cart.append('Pink Flamingo Latte')
                 Total_Cost+= 5.25
                 print('Added Pink Flamingo Latte to order!')
                 time.sleep(0.75)
                 continue
-            elif AddOrderItem in ['tropical','toucan','tea','tropicaltoucantea','toucan tropical tea','toucantropicaltea','tropical toucan tea','toucan tea']:
+            elif AddOrderItem == 'Toucan Tropical Tea':
                 Item_Cart.append('Toucan Tropical Tea')
                 Total_Cost += 4.20
                 print('Added Toucan Tropical Tea to order!')
                 time.sleep(0.75)
                 continue
-            elif AddOrderItem in ['dugong doughnut','dugong','doughnut','dugongdoughnut','donut','dugongdonut']:
+            elif AddOrderItem == 'Dugong Doughnut':
                 Item_Cart.append('Dugong Doughnut')
                 Total_Cost += 3.50
                 print('Added Dugong Doughnut to order!')
                 time.sleep(0.75)
                 continue
-            elif AddOrderItem in ['sunbear','sun','bear','sunbrearscone','scone','sun bear scone','bear']:
+            elif AddOrderItem == 'Sun Bear Scone':
                 Item_Cart.append('Sun Bear Scone')
                 Total_Cost += 4.00
                 print('Added Sun Bear Scone to order!')
                 time.sleep(0.75)
                 continue
-            elif AddOrderItem in ['oreo panda bun', 'oreo bun','panda','orea panda','oreo','oreopandabun','oreopanda']:
+            elif AddOrderItem == 'Oreo Panda Bun':
                 Item_Cart.append('Oreo Panda Bun')
                 Total_Cost += 4.50
                 print('Added Oreo Panda Bun to order!')
                 time.sleep(0.75)
                 continue
-            elif AddOrderItem in ['lion claw pastry','pastry','lion claw','lion','claw','lion pastry','lionpastry']:
+            elif AddOrderItem == 'Lion Claw Pastry':
                 Item_Cart.append('Lion Claw Pastry')
                 Total_Cost += 3.75
                 print('Added Lion Claw Pastry to order!')
                 time.sleep(0.75)
                 continue
-            else:
-                print('Something went wrong')
-                time.sleep(0.5)
+            elif AddOrderItem == 'Return':
+                print('Returning...')
+                time.sleep(1)
                 continue
-        elif Actions in ['buy', 'purchase','checkout']:
+            else:
+                logger.debug('Unrecognised input')
+                continue
+        elif Actions == 'Buy':
             if len(Item_Cart) != 0:
-                purchase = input(f"""You have the following in your order:
+                purchase = questionary.select(f"""You have the following in your order:
 {Item_Cart}
-would you like to checkout? (y/n): 
-""")            
-                if purchase == 'y':
+would you like to checkout?: 
+""",choices=['Yes','No']).ask()
+                if purchase == 'Yes':
                     if Your_Money >= Total_Cost:
                         Inventory.extend(Item_Cart)
                         Your_Money -= Total_Cost
@@ -5871,21 +5807,24 @@ would you like to checkout? (y/n):
                         print('You do not have enough money...')
                         time.sleep(2)
                         continue
+                if purchase == 'No':
+                    continue
             else:
                 print('Your cart is empty...')
                 time.sleep(1)
                 continue
-        elif Actions in ['view', 'viewcart','view cart']:
+        elif Actions == 'View':
             if len(Item_Cart) != 0:
                 print(Item_Cart)
-                Remove_Answer = input('Would you like to remove an item from the order? (y/n): ').lower()
-                if Remove_Answer == 'y':
-                    Remove = input('Which item would you like to remove? (type exactly): ')
+                Remove_Answer = questionary.select('Would you like to remove an item from the order?: ',choices=['Yes','No']).ask()
+                if Remove_Answer == 'Yes':
+                    Remove = questionary.autocomplete('Which item would you like to remove?: ',choices=['Anaconda Americano','Silverback Espresso', 'Pink Flamingo Latte', 'Toucan Tropical Tea','Dugong Doughnut', 'Sun Bear Scone', 'Oreo Panda Bun', 'Lion Claw Pastry']).ask()
                     if Remove in ['Anaconda Americano','Silverback Espresso', 'Pink Flamingo Latte', 'Toucan Tropical Tea','Dugong Doughnut', 'Sun Bear Scone', 'Oreo Panda Bun', 'Lion Claw Pastry']:
                         try: 
                             Item_Cart.remove(Remove)
                         except ValueError:
                             print(f'Failed to remove {Remove} as it is not in the order...')
+                            logger.debug('Player attempted to remove real item that is not in cart')
                             time.sleep(1)
                             continue
                         print(f"{Remove} has been removed from the cart...")
@@ -5916,57 +5855,41 @@ would you like to checkout? (y/n):
                     else: 
                         print(f'Failed to remove {Remove}.')
                         time.sleep(1)
-                elif Remove_Answer == 'n':
+                elif Remove_Answer == 'No':
                     continue
                 else:
-                    print('Something went wrong.')
-                    time.sleep(0.75)
+                    logger.debug('Unrecognised input')
                     continue
             else:
                 print('Your order is empty...')
                 time.sleep(1)
                 continue
-        elif Actions in ['leave', 'exit', 'stop']:
+        elif Actions == 'Leave':
             Total_Cost = 00.00
             break
         else:
-            print('something went wrong')
+            logger.debug('Unrecognised input')
             continue
-def help_desk(): # done
+def help_desk():  # function for when player travels to help desk
     global went_to_help_desk
     went_to_help_desk = True
     while True:
         Clear()
         print(HELP_DESK.format(Help_desk_text=Help_desk_attendent_lines[randint(0,7)]))
-        print('What do you need help with? Commands, Locations, or Game information (code)?')
-        Question = input('>').lower()
-        if Question == 'commands':
-            print('You must type the name of location or command you are trying to input almost exactly as I did not want to try to make the code adapt.')
-            Return = input('Are you done looking at this information? (y/n): ')
-            if Return == 'y':
-                continue
-            elif Return == 'n':
-                print('Too Bad...')
-                time.sleep(0.5)
-                continue
-            else:
-                continue
-        elif Question == 'locations':
+        Question = questionary.select('What do you need help with? Commands, Locations, or Code information?',choices=['Commands','Locations','Code Information','Leave']).ask()
+        if Question == 'Commands': # helpful things
+            print('When typing a place to go or command, let the autocomplete correct the capitalisation')
+            questionary.press_any_key_to_continue().ask()
+            continue
+        elif Question == 'Locations': # helpful things
             print('''The avaliable locations to travel to are:
 Tickets, Gift Shop, Cafe
 Fountain, Restrooms, Help Desk
 The Reptiles, The Aquarium, The Sky Zone
 Gate #1, Gate #2, The Savanna, The Forest''')
-            Return = input('Are you done looking at this information? (y/n): ')
-            if Return == 'y':
-                continue
-            elif Return == 'n':
-                print('Too Bad...')
-                time.sleep(0.5)
-                continue
-            else:
-                continue
-        elif Question in ['game information','info','game info','game','code']:
+            questionary.press_any_key_to_continue().ask()
+            continue
+        elif Question == 'Code Information': # helpful things
             print('''Most things are randomised when possible. 
 IF YOU WANT TO END CODE, PLEASE PLEASE GO TO TICKETS AREA AS THAT SHOULD BE HOW YOU EXIT!!!
 There is 31 animals in the zoo!
@@ -5977,56 +5900,49 @@ The entire file is about 6500 lines of text, about half are dedicated to graphic
 There is 3 secrets in the game.
 Yes, I know a pelican eel could not survive in a aquarium at sea level pressure.
 The file is very big, so that means there could be a bug somewhere that I do not know about.''')
-            Return = input('Are you done looking at this information? (y/n): ')
-            if Return == 'y':
-                continue
-            elif Return == 'n':
-                print('Too Bad...')
-                time.sleep(0.5)
-                continue
-            else:
-                continue
-        elif Question == 'leave':
+            questionary.press_any_key_to_continue().ask()
+            continue
+        elif Question == 'Leave': # helpful things
             break
         else:
+            logger.debug('Unrecognised input')
             continue
-def fountain(): # done
+def fountain():  # function for when player travels to fountain
     while True:
         global Your_Money, secretjump
         Clear()
         print(FOUNTAIN)
         print('You walk up to the fountain...')
-        Fountain_action = input('What would you like to do? (leave/admire/coin): ').lower()
-        if Fountain_action == 'admire':
+        Fountain_action = questionary.autocomplete('What would you like to do? (admire/toss coin/leave): ',choices=['Admire','Toss Coin','Leave']).ask() # text field for action including secret action 'Jump'
+        if Fountain_action == 'Admire':
             print('You admire the fountain...')
             time.sleep(1)
             continue
-        elif Fountain_action == 'coin':
-            Toss_coin = input('Would you like to toss a quarter in? (y/n): ')
-            if Toss_coin == 'y':
+        elif Fountain_action == 'Toss Coin': # toss in a coin and lose 25 cents
+            Toss_coin = questionary.select('Would you like to toss a quarter in?: ',choices=['Yes','No']).ask()
+            if Toss_coin == 'Yes':
                 print('You toss in a quarter...')
                 Your_Money -= 0.25
                 time.sleep(0.5)
                 print(f"You have ${Your_Money:.2f} left...")
                 time.sleep(0.75)
                 continue
-            elif Toss_coin == 'n':
+            elif Toss_coin == 'No':
                 print('You decided to save your money...')
                 time.sleep(1)
                 continue
             else:
-                print('Something went wrong')
-                time.sleep(0.25)
+                logger.debug('Unrecognised input')
                 continue
-        elif Fountain_action == 'jump':
-            if secretjump == False:
+        elif Fountain_action in ['Jump','jump']: # secret action
+            if secretjump == False: # updates secret variable
                 print('You Found a Secret!!')
                 secretjump = True
             else:
                 pass
             print('You elegantly leap into the fountain...')
             time.sleep(1.5)
-            if randint(0,100) >= 93:
+            if randint(0,100) >= 93: # if rand int is higher than 92 then you gain 25 cents
                 print('You Found a Quarter in the fountain!')
                 Your_Money += 0.25
                 print(f'You have ${Your_Money:.2f} now!')
@@ -6038,11 +5954,12 @@ def fountain(): # done
             print('Somehow, no one saw you jump in...')
             time.sleep(1.5)
             continue
-        elif Fountain_action == 'leave':
+        elif Fountain_action == 'Leave':
             break
         else:
-            print('Something went wrong')
-def restrooms(): # done
+            logger.debug('Unrecognised input')
+            continue
+def restrooms():  # function for when player travels to restroom, just for show, no practical use
     Clear()
     print(RESTROOM)
     time.sleep(2)
@@ -6050,20 +5967,21 @@ def restrooms(): # done
     time.sleep(1)
     print('You head back...')
     time.sleep(1.5)
-def gate1(): # done
+    questionary.press_any_key_to_continue().ask()
+def gate1():  # function for when player travels to gate 1
     while True:
         global GATE1_PASS
         Clear()
         print(GATE1)
         time.sleep(0.5)
-        if GATE1_PASS == False:
+        if GATE1_PASS == False: # detects if you were already here
             print('The security guard asks to see your ticket.')
             time.sleep(1)
             print('You flashed your ticket to him and he allows you to pass.')
             time.sleep(1.5)
             GATE1_PASS = True
-            walk_through = input('Would you like to walk through? (y/n): ')
-            if walk_through == 'y':
+            walk_through = questionary.select('Would you like to walk through?: ',choices=['Yes','No']).ask()
+            if walk_through == 'Yes':
                 time.sleep(1)
                 print('He lets you walk through...')
                 time.sleep(1)
@@ -6071,19 +5989,18 @@ def gate1(): # done
                 print('Travelling to The Savanna.')
                 savanna()
                 break
-            elif walk_through == 'n':
+            elif walk_through == 'No':
                 print('You decided to walk back to the main area.')
                 time.sleep(1)
                 break
             else:
-                print('Something went wrong')
-                time.sleep(0.75)
+                logger.debug('Unrecognised input')
                 continue
-        if GATE1_PASS == True:
+        if GATE1_PASS == True: # detects if you were already here
             print('The guard recognises you from earlier...')
             time.sleep(1)
-            walk_through = input('Would you like to walk through? (y/n): ')
-            if walk_through == 'y':
+            walk_through = questionary.select('Would you like to walk through?: ',choices=['Yes','No']).ask()
+            if walk_through == 'Yes':
                 time.sleep(2)
                 print('He lets you walk through...')
                 time.sleep(2)
@@ -6091,20 +6008,19 @@ def gate1(): # done
                 print('Travelling to The Savanna.')
                 savanna()
                 break
-            elif walk_through == 'n':
+            elif walk_through == 'No':
                 print('You decided to walk back to the main area.')
                 time.sleep(1)
                 break
             else:
-                print('Something went wrong')
-                time.sleep(0.75)
+                logger.debug('Unrecognised input')
                 continue    
         else:
-            print('Something went wrong')
+            logger.debug('Unrecognised input')
             continue
-def gate2(): # done
+def gate2():  # function for when player travels to gate 2
     global GATE2_PASS
-    while True:
+    while True: # same as gate 1 but for a different gate
         Clear()
         print(GATE2)
         time.sleep(0.5)
@@ -6114,8 +6030,8 @@ def gate2(): # done
             print('You flashed your ticket to him and he allows you to pass.')
             time.sleep(1)
             GATE2_PASS = True
-            walk_through = input('Would you like to walk through? (y/n): ')
-            if walk_through == 'y':
+            walk_through = questionary.select('Would you like to walk through?: ',choices=['Yes','No']).ask()
+            if walk_through == 'Yes':
                 time.sleep(1)
                 print('He lets you walk through...')
                 time.sleep(1)
@@ -6123,19 +6039,18 @@ def gate2(): # done
                 print('Travelling to The Forest.')
                 forest()
                 break
-            elif walk_through == 'n':
+            elif walk_through == 'No':
                 print('You decided to walk back to the main area.')
                 time.sleep(1)
                 break
             else:
-                print('Something went wrong')
-                time.sleep(0.75)
+                logger.debug('Unrecognised input')
                 continue
         if GATE2_PASS == True:
             print('The guard recognises you from earlier...')
             time.sleep(1)
-            walk_through = input('Would you like to walk through? (y/n): ')
-            if walk_through == 'y':
+            walk_through = questionary.select('Would you like to walk through?: ',choices=['Yes','No']).ask()
+            if walk_through == 'Yes':
                 time.sleep(2)
                 print('He lets you walk through...')
                 time.sleep(2)
@@ -6143,328 +6058,342 @@ def gate2(): # done
                 print('Travelling to The Forest.')
                 forest()
                 break
-            elif walk_through == 'n':
+            elif walk_through == 'No':
                 print('You decided to walk back to the main area.')
                 time.sleep(1)
                 break
             else:
-                print('Something went wrong')
-                time.sleep(0.75)
+                logger.debug('Unrecognised input')
                 continue    
         else:
-            print('Something went wrong')
+            logger.debug('Unrecognised input')
             continue
-def savanna(): # done
+def savanna(): # function for when player travels to savanna
     while True:
         Clear()
         print(SAVANNA)
         time.sleep(0.5)
-        travel_to = input('Where would you like to go?: ').lower()
-        if travel_to == 'ocelot':
+        travel_to = questionary.select('Where would you like to go?: ', choices=['Ocelot','Pangolin','Painted Wolf','Black Rhino','Leave']).ask() # interaction menu to tell game where you want to go
+        if travel_to == 'Ocelot':
             time.sleep(0.5)
             see_ocelot()
             continue
-        elif travel_to == 'pangolin':
+        elif travel_to == 'Pangolin':
             time.sleep(0.5)
             see_pangolin()
             continue
-        elif travel_to in ['painted wolf','wolf', 'painted']:
+        elif travel_to == 'Painted Wolf':
             time.sleep(0.5)
             see_wolf()
             continue
-        elif travel_to in ['black rhinoceros','black','rhinoceros','rhino','black rhino']:
+        elif travel_to == 'Black Rhino':
             time.sleep(0.5)
             see_rhino()
             continue
-        elif travel_to in ['gate', 'gate1', 'gate 1','leave']:
+        elif travel_to == 'Leave':
             Clear()
             print('Leaving Savanna...')
             time.sleep(1)
             break
         else:
+            logger.debug('Unrecognised input')
             continue
-def forest(): # done
-    while True:
+def forest():  # function for when player travels to forest
+    while True: 
         Clear()
         print(FOREST)
         time.sleep(0.5)
-        travel_to = input('Where would you like to go?: ').lower()
-        if travel_to == 'lynx':
+        travel_to = questionary.select('Where would you like to go?: ',choices=['Lynx','Capybara','Silverback Gorilla','Wolverine','Jaguar','Leave']).ask() # menu to tell game where u want to go
+        if travel_to == 'Lynx':
             time.sleep(0.5)
             see_lynx()
             continue
-        elif travel_to == 'capybara':
+        elif travel_to == 'Capybara':
             time.sleep(0.5)
             see_capybara()
             continue
-        elif travel_to in ['silverback gorilla','gorilla','silver','silver gorilla']:
+        elif travel_to == 'Silverback Gorilla':
             time.sleep(0.5)
             see_gorilla()
             continue
-        elif travel_to == 'wolverine':
+        elif travel_to == 'Wolverine':
             time.sleep(0.5)
             see_wolverine()
             continue
-        elif travel_to == 'jaguar':
+        elif travel_to == 'Jaguar':
             time.sleep(0.5)
             see_jaguar()
             continue
-        elif travel_to in ['gate', 'gate2', 'gate 2','leave']:
+        elif travel_to == 'Leave':
             Clear()
             print('Leaving Forest...')
             time.sleep(1)
             break
         else:
+            logger.debug('Unrecognised input')
             continue
-def reptile_house(): # done
+def reptile_house(): # function for when player travels to reptile house
     while True:
         Clear()
         print(REPTILE_HOUSE)
         time.sleep(0.5)
-        travel_to = input('Where would you like to go?: ').lower()
-        if travel_to == 'axolotl':
+        travel_to = questionary.select('Where would you like to go?: ',choices=['The Indian Gharial Crocodile','Danube Crested Newt','Amazon Mata Mata','Mountain Chicken','Arabian Sand Boa',
+        'Burmese Python',"Jackson's Chameleon",'Snake-Necked Turtle','Jerboa','Axolotl','Worm Lizard','Leave']).ask() # menu to tell game wher u want to go
+        if travel_to == 'Axolotl':
             time.sleep(0.5)
             see_axolotl()
             continue
-        elif travel_to == 'jerboa':
+        elif travel_to == 'Jerboa':
             time.sleep(0.5)
             see_jerboa()
             continue
-        elif travel_to in ['crocodile','indian crocodile','gharial crocodile','gharial','indian gharial crocodile','croc','the indian gharial crocodile']:
+        elif travel_to == 'The Indian Gharial Crocodile':
             time.sleep(0.5)
             see_indian_gharial()
             continue
-        elif travel_to in ['newt','crested newt','danube crested newt']:
+        elif travel_to == 'Danube Crested Newt':
             time.sleep(0.5)
             see_newt()
             continue
-        elif travel_to in ['amazon mata mata','mata','mata mata']:
+        elif travel_to == 'Amazon Mata Mata':
             time.sleep(0.5)
             see_mata()
             continue
-        elif travel_to in ['worm lizard','worm']:
+        elif travel_to == 'Worm Lizard':
             time.sleep(0.5)
             see_worm_lizard()
             continue
-        elif travel_to in ['mountain','mountain chicken','chicken']:
+        elif travel_to == 'Mountain Chicken':
             time.sleep(0.5)
             see_mountain_chicken()
             continue
-        elif travel_to in ['sand boa','arabian sand boa','boa']:
+        elif travel_to == 'Arabian Sand Boa':
             time.sleep(0.5)
             see_sand_boa()
             continue
-        elif travel_to in ['burmese python','python']:
+        elif travel_to == 'Burmese Python':
             time.sleep(0.5)
             see_python()
             continue
-        elif travel_to in ["jackson's chameleon",'chameleon']:
+        elif travel_to == "Jackson's Chameleon":
             time.sleep(0.5)
             see_chameleon()
             continue
-        elif travel_to in ['snake-necked turtle','snake necked turtle','snake turtle']:
+        elif travel_to == 'Snake-Necked Turtle':
             time.sleep(0.5)
             see_snake_turtle()
             continue
-        elif travel_to in ['main entrance','leave']:
+        elif travel_to == 'Leave':
             Clear()
             print('Leaving Reptile House...')
             time.sleep(1)
             break
         else:
+            logger.debug('Unrecognised input')
             continue
-def aquarium():
+def aquarium(): # function for when player travels to aquarium
     while True:
         Clear()
         print(AQUARIUM)
         time.sleep(0.5)
-        travel_to = input('Where would you like to look?: ').lower()
-        if travel_to == 'lamprey':
+        travel_to = questionary.select('Where would you like to look?: ',choices=['Lamprey','Sunfish','Giant Isopod','Blue Dragon','Pelican Eel','Bichir','Manta Ray','Leave']).ask() # interaction menu to tell game where u want to go
+        if travel_to == 'Lamprey':
             time.sleep(0.5)
             see_lamprey()
             continue
-        elif travel_to == 'sunfish':
+        elif travel_to == 'Sunfish':
             time.sleep(0.5)
             see_sunfish()
             continue
-        elif travel_to in ['giant','isopod','giant isopod']:
+        elif travel_to == 'Giant Isopod':
             time.sleep(0.5)
             see_giant_isopod()
             continue
-        elif travel_to in ['blue','dragon','blue dragon']:
+        elif travel_to == 'Blue Dragon':
             time.sleep(0.5)
             see_blue_dragon()
             continue
-        elif travel_to in ['pelican','eel','pelican eel']:
+        elif travel_to == 'Pelican Eel':
             time.sleep(0.5)
             see_pelican_eel()
             continue
-        elif travel_to == 'bichir':
+        elif travel_to == 'Bichir':
             time.sleep(0.5)
             see_bichir()
             continue
-        elif travel_to in ['manta','ray', 'manta ray']:
+        elif travel_to == 'Manta Ray':
             time.sleep(0.5)
             see_manta_ray()
             continue
-        elif travel_to in ['main entrance','leave']:
+        elif travel_to == 'Leave':
             Clear()
             print('Leaving Aquarium...')
             time.sleep(1)
             break
         else:
+            logger.debug('Unrecognised input')
             continue
-def bird_house(): # done
+def bird_house():  # function for when player travels to bird house
     while True:
         Clear()
         print(BIRD_HOUSE)
         time.sleep(0.5)
-        travel_to = input('Where would you like to look?: ').lower()
-        if travel_to == 'shoebill':
+        travel_to = questionary.select('Where would you like to look?: ',choices=['Shoebill','Pukeko','Potoo','Macaw','Leave']).ask() # interaction menu to tell game where u wanna go
+        if travel_to == 'Shoebill':
             time.sleep(0.5)
             see_shoebill()
             continue
-        elif travel_to == 'pukeko':
+        elif travel_to == 'Pukeko':
             time.sleep(0.5)
             see_pukeko()
             continue
-        elif travel_to == 'potoo':
+        elif travel_to == 'Potoo':
             time.sleep(0.5)
             see_potoo()
             continue
-        elif travel_to == 'macaw':
+        elif travel_to == 'Macaw':
             time.sleep(0.5)
             see_macaw()
             continue
-        elif travel_to in ['main entrance','leave']:
+        elif travel_to == 'Leave':
             Clear()
             print('Leaving Bird House...')
             time.sleep(1)
             break
         else:
+            logger.debug('Unrecognised input')
             continue
 # endregion
 # region Running Code
-while True:
-    print('Zoom out terminal when viewing animals for the best experience!')
-    print('Please make sure to explore EVERYWHERE (advised but not forced)!')
-    h = input('Proceed?: ')
-    print(ZOO_ENTRANCE,end='')
-    time.sleep(1)
-    print(f"You brought ${Your_Money:.2f} with you...")
-    if randint(1,100) >= 92:
-        print(f"It's your lucky day, as tickets are on sale for ${Sale_Ticket_Price}!")
-        Answer = input(f'Would you like to buy a ticket for ${Sale_Ticket_Price}? (y/n): ')
-        Sale = True
-    else:
-        print("Zoo ticket prices are kinda expensive nowadays...")
-        Answer = input(f'Would you like to buy a ticket for ${Normal_Ticket_Price}? (y/n): ')
-    
-    if Answer == 'n':
-        print("You Decided to come back to the zoo on another day...Maybe prices were too high, or maybe you didn't bring enough cash...Come Back Soon!")
-        time.sleep(2.5)
-        Clear()
-        exit()
-    elif Answer == 'y':
-        Clear()
-        if Sale == True:
-            Your_Money -= Sale_Ticket_Price
+try: 
+    logger.info('Code Initiated')
+    while True:
+        print('Zoom out terminal when viewing animals for the best experience!')
+        print('Please make sure to explore EVERYWHERE (advised but not forced)!')
+        questionary.press_any_key_to_continue().ask()
+        print(ZOO_ENTRANCE,end='')
+        time.sleep(1)
+        print(f"You brought ${Your_Money:.2f} with you...")
+        if randint(1,100) >= 92: # 8% for sale
+            print(f"It's your lucky day, as tickets are on sale for ${Sale_Ticket_Price}!")
+            Answer = questionary.select(f'Would you like to buy a ticket for ${Sale_Ticket_Price}?: ',choices=['Yes','No']).ask()
+            Sale = True
         else:
-            Your_Money -= Normal_Ticket_Price
-        print(f"You have ${Your_Money:.2f} left...")
-        print('Entering...')
-        time.sleep(1.5)
-        break
-    else:
-        Clear()
-        continue
-while True:
-    Clear()
-    print(ZOO_MAIN_AREA)
-    Answer = input('Where you would like to go? (type location name, I for inventory): ').lower()
-    Clear()
-    if Answer == 'tickets':
-        print('Travelling to Tickets')
-        time.sleep(1)
-        tickets()
-    elif Answer in ['gift shop', 'giftshop', 'gift']:
-        print('Travelling to Gift Shop')
-        time.sleep(1)
-        gift_shop()
-    elif Answer == 'cafe':
-        print('Travelling to Cafe')
-        time.sleep(1)
-        cafe()
-    elif Answer in ['i','inventory']:
-        search_inventory()
-    elif Answer in ['help desk','help']:
-        print('Travelling to Help Desk')
-        time.sleep(1)
-        help_desk()
-    elif Answer == 'fountain':
-        print('Travelling to The Fountain')
-        time.sleep(1)
-        fountain()
-    elif Answer in ['restroom','restrooms']:
-        print('Travelling to The Restrooms')
-        time.sleep(1)
-        restrooms()
-    elif Answer in ['gate2', 'gate 2']:
-        print('Travelling to Gate 2')
-        time.sleep(1)
-        gate2()
-    elif Answer in ['gate1', 'gate 1']:
-        print('Travelling to Gate 1')
-        time.sleep(1)
-        gate1()
-    elif Answer in ['the savanna', 'savanna', 'thesavanna']:
-        if GATE1_PASS == False:
-            print('You must talk to the guard at Gate 1 first...')
-            print('Travelling to Gate 1.')
-            time.sleep(2)
-            gate1()
-        elif GATE1_PASS == True:
-            print('You must pass Gate 1 to enter...')
-            print('Travelling to Gate 1.')
-            time.sleep(2)
-            gate1()
-    elif Answer in ['the forest','forest','theforest']:
-        if GATE2_PASS == False:
-            print('You must talk to the guard at Gate 2 first...')
-            print('Travelling to Gate 2.')
-            time.sleep(2)
-            gate2()
-        elif GATE2_PASS == True:
-            print('You must pass Gate 2 to enter...')
-            print('Travelling to Gate 2.')
-            time.sleep(2)
-            gate2()
-    elif Answer in ['reptiles','thereptiles','the reptiles']:
-        print('Travelling to The Reptiles...')
-        time.sleep(2)
-        reptile_house()
-    elif Answer in ['the aquarium', 'aquarium']:
-        print('Travelling to Aquarium')
-        time.sleep(2)
-        aquarium()
-    elif Answer in ['bird house','bird','the bird house']:
-        print('Travelling to Bird House')
-        time.sleep(2)
-        bird_house()
-    elif Answer in ['northern river','river','northern']:
-        print(WIP)
-        if secretriver == False:
-            print('You Found a Secret!!')
-            secretriver = True
+            print("Zoo ticket prices are kinda expensive nowadays...")
+            Answer = questionary.select(f'Would you like to buy a ticket for ${Normal_Ticket_Price}?: ',choices=['Yes','No']).ask()
+        if Answer == 'No': # ends code
+            print("You Decided to come back to the zoo on another day...Maybe prices were too high, or maybe you didn't bring enough cash...Come Back Soon!")
+            time.sleep(2.5)
+            Clear()
+            exit()
+        elif Answer == 'Yes':
+            Clear()
+            if Sale == True:
+                Your_Money -= Sale_Ticket_Price
+            else:
+                Your_Money -= Normal_Ticket_Price
+            print(f"You have ${Your_Money:.2f} left...")
+            print('Entering...')
+            time.sleep(1.5)
+            break
         else:
-            pass
-        time.sleep(2)
-        print('This place is not finished yet...')
-        time.sleep(1)
-        print('This coder sucks...')
-        time.sleep(1.5)
-        print('Why is this even a secret??')
-        time.sleep(1.5)
-    else:
-        continue
+            Clear()
+            logger.debug('Unrecognised input')
+            continue
+    while True:
+        Clear()
+        print(ZOO_MAIN_AREA)
+        Answer = questionary.autocomplete('Where you would like to go? (type location name, there is also inventory): ', 
+        choices=['Tickets','Gift Shop','Inventory','Cafe','Help Desk','Fountain','Restroom','Gate 2','Gate 1','The Savanna','The Forest','The Reptiles','The Aquarium','The Bird House','Northern River']).ask()
+        Clear()
+        if Answer == 'Tickets':
+            print('Travelling to Tickets')
+            time.sleep(1)
+            tickets()
+        elif Answer == 'Gift Shop':
+            print('Travelling to Gift Shop')
+            time.sleep(1)
+            gift_shop()
+        elif Answer == 'Cafe':
+            print('Travelling to Cafe')
+            time.sleep(1)
+            cafe()
+        elif Answer == 'Inventory':
+            search_inventory()
+        elif Answer == 'Help Desk':
+            print('Travelling to Help Desk')
+            time.sleep(1)
+            help_desk()
+        elif Answer == 'Fountain':
+            print('Travelling to The Fountain')
+            time.sleep(1)
+            fountain()
+        elif Answer == 'Restroom':
+            print('Travelling to The Restrooms')
+            time.sleep(1)
+            restrooms()
+        elif Answer == 'Gate 2':
+            print('Travelling to Gate 2')
+            time.sleep(1)
+            gate2()
+        elif Answer == 'Gate 1':
+            print('Travelling to Gate 1')
+            time.sleep(1)
+            gate1()
+        elif Answer == 'The Savanna':
+            if GATE1_PASS == False:
+                print('You must talk to the guard at Gate 1 first...')
+                print('Travelling to Gate 1.')
+                time.sleep(2)
+                gate1()
+            elif GATE1_PASS == True:
+                print('You must pass Gate 1 to enter...')
+                print('Travelling to Gate 1.')
+                time.sleep(2)
+                gate1()
+        elif Answer == 'The Forest':
+            if GATE2_PASS == False:
+                print('You must talk to the guard at Gate 2 first...')
+                print('Travelling to Gate 2.')
+                time.sleep(2)
+                gate2()
+            elif GATE2_PASS == True:
+                print('You must pass Gate 2 to enter...')
+                print('Travelling to Gate 2.')
+                time.sleep(2)
+                gate2()
+        elif Answer == 'The Reptiles':
+            print('Travelling to The Reptiles...')
+            time.sleep(2)
+            reptile_house()
+        elif Answer == 'The Aquarium':
+            print('Travelling to Aquarium')
+            time.sleep(2)
+            aquarium()
+        elif Answer == 'The Bird House':
+            print('Travelling to Bird House')
+            time.sleep(2)
+            bird_house()
+        elif Answer == 'Northern River':
+            print(WIP)
+            if secretriver == False:
+                print('You Found a Secret!!')
+                secretriver = True
+            else:
+                pass
+            time.sleep(2)
+            print('This place is not finished yet...')
+            time.sleep(1)
+            print('This coder sucks...')
+            time.sleep(1.5)
+            print('Why is this even a secret??')
+            time.sleep(1.5)
+        else:
+            logger.debug('Unrecognised input')
+            continue
+except KeyboardInterrupt: # detects and handles this error
+    logging.critical("Keyboard Interrupt initiated")
+    print('Keyboard interrupt initiated.')
+    print('Exiting')
+    exit()
 # endregion
